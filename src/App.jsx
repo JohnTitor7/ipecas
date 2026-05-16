@@ -42,6 +42,13 @@ function App() {
     currentProducts.filter((product) => product.id !== productId)
   );
 }
+function handleUpdateProduct(updatedProduct) {
+  setProducts((currentProducts) =>
+    currentProducts.map((product) =>
+      product.id === updatedProduct.id ? updatedProduct : product
+    )
+  );
+}
   const filteredProducts = products.filter((product) => {
     const searchText = search.toLowerCase();
 
@@ -75,6 +82,7 @@ function App() {
   products={products}
   onAddProduct={handleAddProduct}
   onDeleteProduct={handleDeleteProduct}
+  onUpdateProduct={handleUpdateProduct}
 />
     </div>
   );

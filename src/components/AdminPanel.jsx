@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-function AdminPanel({ products, onAddProduct, onDeleteProduct }) {
+function AdminPanel({
+  products,
+  onAddProduct,
+  onDeleteProduct,
+  onUpdateProduct,
+}) {
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -10,6 +15,8 @@ function AdminPanel({ products, onAddProduct, onDeleteProduct }) {
     stock: "Disponível",
     image: "",
   });
+
+  const [editingProductId, setEditingProductId] = useState(null);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -28,7 +35,44 @@ function AdminPanel({ products, onAddProduct, onDeleteProduct }) {
       return;
     }
 
-    onAddProduct(formData);
+    if (editingProductId) {
+      onUpdateProduct({
+        id: editingProductId,
+        ...formData,
+      });
+
+      setEditingProductId(null);
+    } else {
+      onAddProduct(formData);
+    }
+
+    setFormData({
+      name: "",
+      category: "",
+      brand: "",
+      model: "",
+      price: "",
+      stock: "Disponível",
+      image: "",
+    });
+  }
+
+  function handleEditProduct(product) {
+    setEditingProductId(product.id);
+
+    setFormData({
+      name: product.name,
+      category: product.category,
+      brand: product.brand,
+      model: product.model,
+      price: product.price,
+      stock: product.stock,
+      image: product.image,
+    });
+  }
+
+  function handleCancelEdit() {
+    setEditingProductId(null);
 
     setFormData({
       name: "",
@@ -54,7 +98,7 @@ function AdminPanel({ products, onAddProduct, onDeleteProduct }) {
       </h2>
 
       <p style={{ color: "#aaa", marginBottom: "30px" }}>
-        Área para cadastrar, visualizar e remover produtos da loja.
+        Área para cadastrar, editar, visualizar e remover produtos da loja.
       </p>
 
       <form
@@ -148,8 +192,26 @@ function AdminPanel({ products, onAddProduct, onDeleteProduct }) {
             marginTop: "10px",
           }}
         >
-          Adicionar produto
+          {editingProductId ? "Salvar alterações" : "Adicionar produto"}
         </button>
+
+        {editingProductId && (
+          <button
+            type="button"
+            onClick={handleCancelEdit}
+            style={{
+              backgroundColor: "transparent",
+              color: "#aaa",
+              border: "1px solid #555",
+              padding: "14px",
+              borderRadius: "10px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Cancelar edição
+          </button>
+        )}
       </form>
 
       <div
@@ -188,21 +250,39 @@ function AdminPanel({ products, onAddProduct, onDeleteProduct }) {
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => onDeleteProduct(product.id)}
-                  style={{
-                    backgroundColor: "transparent",
-                    color: "#dc2626",
-                    border: "1px solid #dc2626",
-                    padding: "10px 14px",
-                    borderRadius: "10px",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Remover
-                </button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button
+                    type="button"
+                    onClick={() => handleEditProduct(product)}
+                    style={{
+                      backgroundColor: "transparent",
+                      color: "#fff",
+                      border: "1px solid #555",
+                      padding: "10px 14px",
+                      borderRadius: "10px",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Editar
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => onDeleteProduct(product.id)}
+                    style={{
+                      backgroundColor: "transparent",
+                      color: "#dc2626",
+                      border: "1px solid #dc2626",
+                      padding: "10px 14px",
+                      borderRadius: "10px",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Remover
+                  </button>
+                </div>
               </div>
             ))}
           </div>
