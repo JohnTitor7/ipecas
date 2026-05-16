@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import logo from "./assets/logo-ipecas.png";
 import { products as initialProducts } from "./data/products";
@@ -12,7 +13,6 @@ const STORAGE_KEY = "ipecas-products";
 
 function App() {
   const [search, setSearch] = useState("");
-  const [showAdminPanel, setShowAdminPanel] = useState(false);
 
   const [products, setProducts] = useState(() => {
     const savedProducts = localStorage.getItem(STORAGE_KEY);
@@ -38,25 +38,28 @@ function App() {
     ]);
   }
 
- function handleDeleteProduct(productId) {
-  setProducts((currentProducts) =>
-    currentProducts.filter((product) => product.id !== productId)
-  );
-}
-function handleUpdateProduct(updatedProduct) {
-  setProducts((currentProducts) =>
-    currentProducts.map((product) =>
-      product.id === updatedProduct.id ? updatedProduct : product
-    )
-  );
-}
+  function handleDeleteProduct(productId) {
+    setProducts((currentProducts) =>
+      currentProducts.filter((product) => product.id !== productId)
+    );
+  }
+
+  function handleUpdateProduct(updatedProduct) {
+    setProducts((currentProducts) =>
+      currentProducts.map((product) =>
+        product.id === updatedProduct.id ? updatedProduct : product
+      )
+    );
+  }
+
   const filteredProducts = products.filter((product) => {
     const searchText = search.toLowerCase();
 
     return (
       product.name.toLowerCase().includes(searchText) ||
       product.category.toLowerCase().includes(searchText) ||
-      product.brand.toLowerCase().includes(searchText)
+      product.brand.toLowerCase().includes(searchText) ||
+      product.model.toLowerCase().includes(searchText)
     );
   });
 
@@ -71,39 +74,34 @@ function handleUpdateProduct(updatedProduct) {
     >
       <Header logo={logo} />
 
-      <Hero />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
 
-      <Catalog
-        search={search}
-        setSearch={setSearch}
-        products={filteredProducts}
-      />
+              <Catalog
+                search={search}
+                setSearch={setSearch}
+                products={filteredProducts}
+              />
+            </>
+          }
+        />
 
-      <div style={{ textAlign: "center", padding: "30px" }}>
-  <button
-    type="button"
-    onClick={() => setShowAdminPanel((currentValue) => !currentValue)}
-    style={{
-      backgroundColor: "transparent",
-      color: "#aaa",
-      border: "1px solid #333",
-      padding: "12px 18px",
-      borderRadius: "10px",
-      cursor: "pointer",
-    }}
-  >
-    {showAdminPanel ? "Ocultar painel" : "Acessar painel administrativo"}
-  </button>
-</div>
-
-{showAdminPanel && (
-  <AdminPanel
-    products={products}
-    onAddProduct={handleAddProduct}
-    onDeleteProduct={handleDeleteProduct}
-    onUpdateProduct={handleUpdateProduct}
-  />
-)}
+        <Route
+          path="/admin"
+          element={
+            <AdminPanel
+              products={products}
+              onAddProduct={handleAddProduct}
+              onDeleteProduct={handleDeleteProduct}
+              onUpdateProduct={handleUpdateProduct}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 }
