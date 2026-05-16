@@ -37,6 +37,11 @@ function App() {
     ]);
   }
 
+ function handleDeleteProduct(productId) {
+  setProducts((currentProducts) =>
+    currentProducts.filter((product) => product.id !== productId)
+  );
+}
   const filteredProducts = products.filter((product) => {
     const searchText = search.toLowerCase();
 
@@ -66,7 +71,11 @@ function App() {
         products={filteredProducts}
       />
 
-      <AdminPanel onAddProduct={handleAddProduct} />
+      <AdminPanel
+  products={products}
+  onAddProduct={handleAddProduct}
+  onDeleteProduct={handleDeleteProduct}
+/>
     </div>
   );
 }
