@@ -12,6 +12,7 @@ const STORAGE_KEY = "ipecas-products";
 
 function App() {
   const [search, setSearch] = useState("");
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
 
   const [products, setProducts] = useState(() => {
     const savedProducts = localStorage.getItem(STORAGE_KEY);
@@ -78,12 +79,31 @@ function handleUpdateProduct(updatedProduct) {
         products={filteredProducts}
       />
 
-      <AdminPanel
-  products={products}
-  onAddProduct={handleAddProduct}
-  onDeleteProduct={handleDeleteProduct}
-  onUpdateProduct={handleUpdateProduct}
-/>
+      <div style={{ textAlign: "center", padding: "30px" }}>
+  <button
+    type="button"
+    onClick={() => setShowAdminPanel((currentValue) => !currentValue)}
+    style={{
+      backgroundColor: "transparent",
+      color: "#aaa",
+      border: "1px solid #333",
+      padding: "12px 18px",
+      borderRadius: "10px",
+      cursor: "pointer",
+    }}
+  >
+    {showAdminPanel ? "Ocultar painel" : "Acessar painel administrativo"}
+  </button>
+</div>
+
+{showAdminPanel && (
+  <AdminPanel
+    products={products}
+    onAddProduct={handleAddProduct}
+    onDeleteProduct={handleDeleteProduct}
+    onUpdateProduct={handleUpdateProduct}
+  />
+)}
     </div>
   );
 }
