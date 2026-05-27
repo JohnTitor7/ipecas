@@ -52,6 +52,18 @@ function App() {
     );
   }
 
+  function handleResetProducts() {
+  const confirmReset = window.confirm(
+    "Tem certeza que deseja restaurar os produtos iniciais?"
+  );
+
+  if (!confirmReset) {
+    return;
+  }
+
+  setProducts(initialProducts);
+}
+
   const filteredProducts = products.filter((product) => {
     const searchText = search.toLowerCase();
 
@@ -94,11 +106,12 @@ function App() {
           path="/admin"
           element={
             <AdminPanel
-              products={products}
-              onAddProduct={handleAddProduct}
-              onDeleteProduct={handleDeleteProduct}
-              onUpdateProduct={handleUpdateProduct}
-            />
+            products={products}
+           onAddProduct={handleAddProduct}
+           onDeleteProduct={handleDeleteProduct}
+           onUpdateProduct={handleUpdateProduct}
+           onResetProducts={handleResetProducts}
+/>
           }
         />
       </Routes>
