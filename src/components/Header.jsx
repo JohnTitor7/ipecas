@@ -2,21 +2,28 @@ import { Link } from "react-router-dom";
 import { MessageCircle, Search } from "lucide-react";
 import "./Header.css";
 
-function Header({ logo, search, onSearchChange }) {
+function Header({
+  logo,
+  search,
+  onSearchChange,
+  selectedCategory,
+  onSelectCategory,
+  onClearCategory,
+}) {
   const whatsappNumber = "5521995519228";
   const whatsappLink = `https://wa.me/${whatsappNumber}`;
 
   const navItems = [
-    "Início",
-    "Telas",
-    "Baterias",
-    "Conectores",
-    "Flex e Cabos",
-    "Câmeras",
-    "Carcaças",
-    "Auto-falantes",
-    "Outros",
-  ];
+  { label: "Início", category: "Todos" },
+  { label: "Telas", category: "Telas" },
+  { label: "Baterias", category: "Baterias" },
+  { label: "Conectores", category: "Conectores" },
+  { label: "Flex e Cabos", category: "Cabos" },
+  { label: "Câmeras", category: "Câmeras" },
+  { label: "Carcaças", category: "Carcaças" },
+  { label: "Auto-falantes", category: "Componentes" },
+  { label: "Outros", category: "Outros" },
+];
 
   return (
     <header className="site-header">
@@ -70,15 +77,24 @@ function Header({ logo, search, onSearchChange }) {
 
       <nav className="header-nav">
         <div className="header-nav-content">
-          {navItems.map((item, index) => (
-            <a
-              key={item}
-              href={index === 0 ? "#" : "#catalogo"}
-              className={index === 0 ? "header-nav-link active" : "header-nav-link"}
-            >
-              {item}
-            </a>
-          ))}
+          {navItems.map((item) => {
+  const isActive = selectedCategory === item.category;
+
+  return (
+              <button
+                key={item.label}
+                type="button"
+                onClick={() =>
+                  item.category === "Todos"
+                    ? onClearCategory()
+                    : onSelectCategory(item.category)
+                }
+                className={isActive ? "header-nav-link active" : "header-nav-link"}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
       </nav>
     </header>

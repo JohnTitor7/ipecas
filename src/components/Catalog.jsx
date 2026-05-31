@@ -82,8 +82,8 @@ const viewAllStyle = {
 
 const productsGridStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
-  gap: "18px",
+  gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
+  gap: "16px",
 };
 
 const emptyStateStyle = {

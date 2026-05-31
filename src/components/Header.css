@@ -144,6 +144,10 @@
 }
 
 .header-nav-link {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
   color: #ddd;
   text-decoration: none;
   font-weight: bold;

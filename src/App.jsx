@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Catalog from "./components/Catalog";
 import AdminPanel from "./components/AdminPanel";
+import CategoryPage from "./components/CategoryPage";
 
 const STORAGE_KEY = "ipecas-products";
 
@@ -65,20 +66,34 @@ function App() {
     setProducts(initialProducts);
   }
 
-  const filteredProducts = products.filter((product) => {
+  function handleSelectCategory(category) {
+    setSelectedCategory(category);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  function handleClearCategory() {
+    setSelectedCategory("Todos");
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+  const searchedProducts = products.filter((product) => {
     const searchText = search.toLowerCase();
 
-    const matchesSearch =
+    return (
       product.name.toLowerCase().includes(searchText) ||
       product.category.toLowerCase().includes(searchText) ||
       product.brand.toLowerCase().includes(searchText) ||
-      product.model.toLowerCase().includes(searchText);
-
-    const matchesCategory =
-      selectedCategory === "Todos" || product.category === selectedCategory;
-
-    return matchesSearch && matchesCategory;
+      product.model.toLowerCase().includes(searchText)
+    );
   });
+
+  const isHomePage = selectedCategory === "Todos";
 
   return (
     <div
@@ -93,23 +108,28 @@ function App() {
         logo={logo}
         search={search}
         onSearchChange={(event) => setSearch(event.target.value)}
+        selectedCategory={selectedCategory}
+        onSelectCategory={handleSelectCategory}
+        onClearCategory={handleClearCategory}
       />
 
       <Routes>
         <Route
           path="/"
           element={
-            <>
-              <Hero />
+            isHomePage ? (
+              <>
+                <Hero onSelectCategory={handleSelectCategory} />
 
-              <Catalog
-                search={search}
-                setSearch={setSearch}
-                products={filteredProducts}
-                selectedCategory={selectedCategory}
-                onSelectCategory={setSelectedCategory}
+                <Catalog products={searchedProducts} />
+              </>
+            ) : (
+              <CategoryPage
+                category={selectedCategory}
+                products={searchedProducts}
+                onClearCategory={handleClearCategory}
               />
-            </>
+            )
           }
         />
 

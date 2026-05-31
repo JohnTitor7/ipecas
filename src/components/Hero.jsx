@@ -20,7 +20,7 @@ import {
 import heroBanner from "../assets/hero-banner.png";
 import "./Hero.css";
 
-function Hero() {
+function Hero({ onSelectCategory }) {
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
   const categories = [
@@ -144,12 +144,15 @@ function Hero() {
               const Icon = category.icon;
 
               return (
-                <a
-                  key={category.name}
-                  href="#catalogo"
-                  className="hero-category-link"
-                  onClick={closeCategoryMenu}
-                >
+                      <button
+                      key={category.name}
+                      type="button"
+                      className="hero-category-link"
+                      onClick={() => {
+                        onSelectCategory(category.name);
+                        closeCategoryMenu();
+                      }}
+                    >
                   <span className="hero-category-icon">
                     <Icon size={19} />
                   </span>
@@ -165,7 +168,7 @@ function Hero() {
                   </span>
 
                   <ChevronRight size={18} className="hero-category-arrow" />
-                </a>
+                </button>
               );
             })}
           </div>

@@ -48,6 +48,14 @@
 }
 
 .hero-category-link {
+  width: 100%;
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
   display: flex;
   align-items: center;
   gap: 12px;
