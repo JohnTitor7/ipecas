@@ -1,92 +1,185 @@
 function ProductCard({ product }) {
+  const whatsappNumber = "5521995519228";
+
+  const whatsappMessage = `Olá, tenho interesse na peça: ${product.name} - ${product.model}. Ainda está disponível?`;
+
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    whatsappMessage
+  )}`;
+
+  const stockColor = getStockColor(product.stock);
+
   return (
-    <div
+    <article
       style={{
-        backgroundColor: "#151515",
-        border: "1px solid #333",
-        borderRadius: "16px",
-        padding: "20px",
+        backgroundColor: "#111",
+        border: "1px solid #2a2a2a",
+        borderRadius: "20px",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        transition: "0.2s ease",
       }}
     >
       <div
-  style={{
-    height: "180px",
-    backgroundColor: "#000",
-    borderRadius: "12px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-    marginBottom: "20px",
-  }}
->
-  {product.image ? (
-    <img
-      src={product.image}
-      alt={product.name}
-      style={{
-        width: "100%",
-        height: "100%",
-        objectFit: "contain",
-        padding: "10px",
-      }}
-    />
-  ) : (
-    <span style={{ color: "#777" }}>Imagem da peça</span>
-  )}
-</div>
-
-      <h3>{product.name}</h3>
-
-      <p style={{ color: "#999", fontSize: "14px" }}>
-        {product.category}
-      </p>
-
-      <p style={{ color: "#777", fontSize: "13px" }}>
-        Marca: {product.brand}
-      </p>
-      
-      <p style={{ color: "#777", fontSize: "13px" }}>
-  Modelo: {product.model}
-      </p>
-
-      <p
         style={{
-          color: "red",
-          fontSize: "24px",
-          fontWeight: "bold",
+          height: "210px",
+          backgroundColor: "#050505",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "18px",
+          borderBottom: "1px solid #222",
         }}
       >
-        {product.price}
-      </p>
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+            }}
+          />
+        ) : (
+          <span
+            style={{
+              color: "#777",
+              fontSize: "14px",
+            }}
+          >
+            Sem imagem
+          </span>
+        )}
+      </div>
 
-      <p style={{ color: "#22c55e" }}>{product.stock}</p>
-
-      <a
-        href={`https://wa.me/5500000000000?text=Olá,%20tenho%20interesse%20na%20peça:%20${encodeURIComponent(
-          product.name
-        )}`}
-        target="_blank"
-        rel="noreferrer"
+      <div
         style={{
-          display: "block",
-          textAlign: "center",
-          marginTop: "15px",
-          width: "100%",
-          backgroundColor: "red",
-          color: "white",
-          textDecoration: "none",
-          border: "none",
-          padding: "12px",
-          borderRadius: "10px",
-          cursor: "pointer",
-          fontWeight: "bold",
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
         }}
       >
-        Consultar no WhatsApp
-      </a>
-    </div>
+        <div style={{ marginBottom: "12px" }}>
+          <span
+            style={{
+              display: "inline-block",
+              backgroundColor: "rgba(220, 38, 38, 0.12)",
+              color: "#f87171",
+              border: "1px solid rgba(220, 38, 38, 0.35)",
+              padding: "5px 10px",
+              borderRadius: "999px",
+              fontSize: "12px",
+              fontWeight: "bold",
+            }}
+          >
+            {product.category}
+          </span>
+        </div>
+
+        <h3
+          style={{
+            color: "white",
+            fontSize: "19px",
+            margin: "0 0 8px",
+            lineHeight: "1.3",
+          }}
+        >
+          {product.name}
+        </h3>
+
+        <p
+          style={{
+            color: "#888",
+            fontSize: "14px",
+            margin: "0 0 4px",
+          }}
+        >
+          Marca: {product.brand}
+        </p>
+
+        <p
+          style={{
+            color: "#888",
+            fontSize: "14px",
+            margin: "0 0 16px",
+          }}
+        >
+          Modelo: {product.model}
+        </p>
+
+        <div
+          style={{
+            marginTop: "auto",
+          }}
+        >
+          <p
+            style={{
+              color: "#dc2626",
+              fontSize: "26px",
+              fontWeight: "bold",
+              margin: "0 0 10px",
+            }}
+          >
+            {product.price}
+          </p>
+
+          <p
+            style={{
+              color: stockColor,
+              fontSize: "14px",
+              fontWeight: "bold",
+              margin: "0 0 18px",
+            }}
+          >
+            {product.stock}
+          </p>
+
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: "block",
+              width: "100%",
+              backgroundColor: "#dc2626",
+              color: "white",
+              textAlign: "center",
+              textDecoration: "none",
+              padding: "13px",
+              borderRadius: "12px",
+              fontWeight: "bold",
+              boxSizing: "border-box",
+            }}
+          >
+            Consultar no WhatsApp
+          </a>
+        </div>
+      </div>
+    </article>
   );
+}
+
+function getStockColor(stock) {
+  if (stock === "Disponível") {
+    return "#22c55e";
+  }
+
+  if (stock === "Últimas unidades") {
+    return "#facc15";
+  }
+
+  if (stock === "Sob consulta") {
+    return "#60a5fa";
+  }
+
+  if (stock === "Indisponível") {
+    return "#ef4444";
+  }
+
+  return "#aaa";
 }
 
 export default ProductCard;

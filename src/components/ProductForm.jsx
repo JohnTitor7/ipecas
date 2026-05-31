@@ -6,18 +6,24 @@ function ProductForm({
   onCancelEdit,
 }) {
   return (
-    <form
-      onSubmit={onSubmit}
-      style={{
-        backgroundColor: "#151515",
-        border: "1px solid #333",
-        borderRadius: "16px",
-        padding: "25px",
-        display: "grid",
-        gap: "15px",
-        marginBottom: "30px",
-      }}
-    >
+   <form
+  onSubmit={onSubmit}
+  style={{
+  backgroundColor: "#151515",
+  border: "1px solid #333",
+  borderRadius: "20px",
+  padding: "30px",
+  marginBottom: "30px",
+  boxShadow: "0 20px 40px rgba(0, 0, 0, 0.25)",
+}}
+>
+  <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gap: "18px",
+  }}
+>
       <input
         type="text"
         name="name"
@@ -96,19 +102,22 @@ function ProductForm({
           substituído por upload direto de imagem.
         </p>
       </div>
+     </div> 
 
       <button
         type="submit"
         style={{
-          backgroundColor: "#dc2626",
-          color: "white",
-          border: "none",
-          padding: "14px",
-          borderRadius: "10px",
-          cursor: "pointer",
-          fontWeight: "bold",
-          marginTop: "10px",
-        }}
+        backgroundColor: "#dc2626",
+        color: "white",
+        border: "none",
+        padding: "15px",
+        borderRadius: "12px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        marginTop: "18px",
+        width: "100%",
+        fontSize: "15px",
+}}
       >
         {editingProductId ? "Salvar alterações" : "Adicionar produto"}
       </button>
@@ -118,14 +127,15 @@ function ProductForm({
           type="button"
           onClick={onCancelEdit}
           style={{
-            backgroundColor: "transparent",
-            color: "#aaa",
-            border: "1px solid #555",
-            padding: "14px",
-            borderRadius: "10px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
+          backgroundColor: "transparent",
+          color: "#aaa",
+          border: "1px solid #555",
+          padding: "15px",
+          borderRadius: "12px",
+          cursor: "pointer",
+          fontWeight: "bold",
+          width: "100%",
+}}
         >
           Cancelar edição
         </button>
@@ -136,12 +146,14 @@ function ProductForm({
 
 const inputStyle = {
   width: "100%",
-  padding: "14px",
-  borderRadius: "10px",
+  padding: "15px",
+  borderRadius: "12px",
   border: "1px solid #333",
-  backgroundColor: "#0a0a0a",
+  backgroundColor: "#090909",
   color: "white",
   fontSize: "15px",
+  outline: "none",
+  boxSizing: "border-box",
 };
 
 export default ProductForm;

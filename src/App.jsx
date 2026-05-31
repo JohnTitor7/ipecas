@@ -13,6 +13,7 @@ const STORAGE_KEY = "ipecas-products";
 
 function App() {
   const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Todos");
 
   const [products, setProducts] = useState(() => {
     const savedProducts = localStorage.getItem(STORAGE_KEY);
@@ -53,26 +54,30 @@ function App() {
   }
 
   function handleResetProducts() {
-  const confirmReset = window.confirm(
-    "Tem certeza que deseja restaurar os produtos iniciais?"
-  );
+    const confirmReset = window.confirm(
+      "Tem certeza que deseja restaurar os produtos iniciais?"
+    );
 
-  if (!confirmReset) {
-    return;
+    if (!confirmReset) {
+      return;
+    }
+
+    setProducts(initialProducts);
   }
-
-  setProducts(initialProducts);
-}
 
   const filteredProducts = products.filter((product) => {
     const searchText = search.toLowerCase();
 
-    return (
+    const matchesSearch =
       product.name.toLowerCase().includes(searchText) ||
       product.category.toLowerCase().includes(searchText) ||
       product.brand.toLowerCase().includes(searchText) ||
-      product.model.toLowerCase().includes(searchText)
-    );
+      product.model.toLowerCase().includes(searchText);
+
+    const matchesCategory =
+      selectedCategory === "Todos" || product.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -84,7 +89,11 @@ function App() {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      <Header logo={logo} />
+      <Header
+        logo={logo}
+        search={search}
+        onSearchChange={(event) => setSearch(event.target.value)}
+      />
 
       <Routes>
         <Route
@@ -97,6 +106,8 @@ function App() {
                 search={search}
                 setSearch={setSearch}
                 products={filteredProducts}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
               />
             </>
           }
@@ -106,12 +117,12 @@ function App() {
           path="/admin"
           element={
             <AdminPanel
-            products={products}
-           onAddProduct={handleAddProduct}
-           onDeleteProduct={handleDeleteProduct}
-           onUpdateProduct={handleUpdateProduct}
-           onResetProducts={handleResetProducts}
-/>
+              products={products}
+              onAddProduct={handleAddProduct}
+              onDeleteProduct={handleDeleteProduct}
+              onUpdateProduct={handleUpdateProduct}
+              onResetProducts={handleResetProducts}
+            />
           }
         />
       </Routes>
