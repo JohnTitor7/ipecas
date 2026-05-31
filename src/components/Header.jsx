@@ -236,7 +236,8 @@ const navContentStyle = {
   margin: "0 auto",
   display: "flex",
   alignItems: "center",
-  gap: "34px",
+  justifyContent: "center",
+  gap: "38px",
   overflowX: "auto",
 };
 

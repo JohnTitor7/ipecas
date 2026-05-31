@@ -1,0 +1,266 @@
+.hero-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 32px 36px;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.mobile-category-button {
+  display: none;
+}
+
+.hero-sidebar {
+  background-color: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  overflow: hidden;
+  height: fit-content;
+}
+
+.hero-sidebar-header {
+  background-color: #111;
+  color: #dc2626;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  text-transform: uppercase;
+  border-top: 3px solid #dc2626;
+  border-bottom: 1px solid #242424;
+}
+
+.hero-sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-sidebar-close {
+  display: none;
+}
+
+.hero-category-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid #242424;
+  color: #ddd;
+  text-decoration: none;
+}
+
+.hero-category-link:hover {
+  background-color: #161616;
+}
+
+.hero-category-icon {
+  width: 28px;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-category-content {
+  flex: 1;
+}
+
+.hero-category-name {
+  display: block;
+  color: white;
+  font-size: 14px;
+}
+
+.hero-category-description {
+  display: block;
+  color: #888;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.hero-category-arrow {
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+.hero-quality-box {
+  margin: 14px;
+  padding: 14px;
+  background-color: #0a0a0a;
+  border: 1px solid #333;
+  border-radius: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.hero-quality-icon {
+  color: #dc2626;
+  flex-shrink: 0;
+}
+
+.hero-quality-title {
+  color: #f87171;
+}
+
+.hero-quality-text {
+  color: #aaa;
+  font-size: 12px;
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+
+.hero-main-content {
+  min-width: 0;
+}
+
+.hero-banner-wrapper {
+  border: 1px solid #2a2a2a;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #050505;
+}
+
+.hero-banner-image {
+  width: 100%;
+  height: 365px;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-info-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.hero-info-box {
+  min-height: 76px;
+  background-color: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hero-info-icon {
+  color: #dc2626;
+  flex-shrink: 0;
+}
+
+.hero-info-box strong {
+  color: white;
+  font-size: 15px;
+  line-height: 1.1;
+}
+
+.hero-info-description {
+  color: #aaa;
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.category-overlay {
+  display: none;
+}
+
+/* Tablet e celular */
+@media (max-width: 900px) {
+  .hero-section {
+    padding: 18px 14px 30px;
+  }
+
+  .mobile-category-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 14px;
+  }
+
+  .hero-grid {
+    display: block;
+  }
+
+  .hero-main-content {
+    display: block;
+  }
+
+  .hero-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 82%;
+    max-width: 320px;
+    height: 100vh;
+    z-index: 1000;
+    border-radius: 0;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    overflow-y: auto;
+  }
+
+  .hero-sidebar-open {
+    transform: translateX(0);
+  }
+
+  .hero-sidebar-close {
+    display: flex;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+
+  .category-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    border: none;
+    z-index: 999;
+  }
+
+  .hero-banner-image {
+    height: auto;
+    object-fit: contain;
+  }
+
+  .hero-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Celular pequeno */
+@media (max-width: 600px) {
+  .hero-section {
+    padding: 16px 12px 28px;
+  }
+
+  .hero-banner-wrapper {
+    border-radius: 14px;
+  }
+
+  .hero-info-box {
+    padding: 14px;
+  }
+}
