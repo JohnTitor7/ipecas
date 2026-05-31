@@ -1,21 +1,19 @@
 import {
   Battery,
-  Cable,
-  Camera,
   Headphones,
   MonitorSmartphone,
   Package,
   ShieldCheck,
   Smartphone,
-  TabletSmartphone,
   Wrench,
   Zap,
-  Truck,
   MessageCircle,
   SearchCheck,
   Menu,
   ChevronRight,
 } from "lucide-react";
+
+import heroBanner from "../assets/hero-banner.png";
 
 function Hero() {
   const categories = [
@@ -58,24 +56,6 @@ function Hero() {
       name: "Outros",
       description: "Diversos",
       icon: Package,
-    },
-  ];
-
-  const benefits = [
-    {
-      icon: ShieldCheck,
-      title: "Peças testadas",
-      description: "e de qualidade",
-    },
-    {
-      icon: Truck,
-      title: "Envio rápido",
-      description: "consulte disponibilidade",
-    },
-    {
-      icon: Headphones,
-      title: "Atendimento",
-      description: "especializado",
     },
   ];
 
@@ -149,67 +129,12 @@ function Hero() {
         </aside>
 
         <div>
-          <div style={bannerStyle}>
-            <div style={bannerContentStyle}>
-              <p style={bannerLabelStyle}>#ipeças</p>
-
-              <h2 style={bannerTitleStyle}>
-                Peças e acessórios
-                <span style={bannerTitleHighlightStyle}> para celulares</span>
-              </h2>
-
-              <p style={bannerDescriptionStyle}>
-                Consulte preços e disponibilidade pelo WhatsApp com um de nossos
-                atendentes.
-              </p>
-
-              <div style={benefitsStyle}>
-                {benefits.map((benefit) => {
-                  const Icon = benefit.icon;
-
-                  return (
-                    <div key={benefit.title} style={benefitItemStyle}>
-                      <Icon size={26} style={benefitIconStyle} />
-
-                      <div>
-                        <strong>{benefit.title}</strong>
-
-                        <p style={benefitDescriptionStyle}>
-                          {benefit.description}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div style={phoneMockupStyle}>
-              <div style={phoneScreenStyle}>
-                <TabletSmartphone
-                  size={70}
-                  style={{
-                    color: "rgba(255,255,255,0.16)",
-                  }}
-                />
-              </div>
-
-              <div style={phoneBodyStyle}>
-                <div style={phoneBatteryStyle}>Li-ion</div>
-                <Cable
-                  size={42}
-                  style={{
-                    position: "absolute",
-                    bottom: "28px",
-                    right: "32px",
-                    color: "rgba(255,255,255,0.18)",
-                  }}
-                />
-              </div>
-            </div>
-
-            <div style={redDetailOneStyle} />
-            <div style={redDetailTwoStyle} />
+          <div style={bannerImageWrapperStyle}>
+            <img
+              src={heroBanner}
+              alt="Peças para celular"
+              style={bannerImageStyle}
+            />
           </div>
 
           <div style={brandAndInfoStyle}>
@@ -217,13 +142,18 @@ function Hero() {
               <p style={brandTitleStyle}>Marcas mais buscadas</p>
 
               <div style={brandListStyle}>
-                {["Apple", "Samsung", "Motorola", "Xiaomi", "Realme", "Infinix"].map(
-                  (brand) => (
-                    <span key={brand} style={brandChipStyle}>
-                      {brand}
-                    </span>
-                  )
-                )}
+                {[
+                  "Apple",
+                  "Samsung",
+                  "Motorola",
+                  "Xiaomi",
+                  "Realme",
+                  "Infinix",
+                ].map((brand) => (
+                  <span key={brand} style={brandChipStyle}>
+                    {brand}
+                  </span>
+                ))}
               </div>
             </div>
 
@@ -339,150 +269,18 @@ const qualityTextStyle = {
   lineHeight: "1.4",
 };
 
-const bannerStyle = {
-  position: "relative",
-  minHeight: "365px",
-  background:
-    "radial-gradient(circle at 75% 50%, rgba(220, 38, 38, 0.28), transparent 30%), linear-gradient(135deg, #141414 0%, #050505 55%, #1a0505 100%)",
+const bannerImageWrapperStyle = {
   border: "1px solid #2a2a2a",
   borderRadius: "16px",
   overflow: "hidden",
-  padding: "50px",
-  display: "flex",
-  alignItems: "center",
+  backgroundColor: "#050505",
 };
 
-const bannerContentStyle = {
-  maxWidth: "620px",
-  position: "relative",
-  zIndex: 2,
-};
-
-const bannerLabelStyle = {
-  color: "#dc2626",
-  margin: "0 0 10px",
-  fontWeight: "bold",
-};
-
-const bannerTitleStyle = {
-  color: "white",
-  fontSize: "56px",
-  lineHeight: "1",
-  margin: 0,
-  fontWeight: "900",
-};
-
-const bannerTitleHighlightStyle = {
+const bannerImageStyle = {
+  width: "100%",
+  height: "365px",
+  objectFit: "cover",
   display: "block",
-  color: "#dc2626",
-};
-
-const bannerDescriptionStyle = {
-  color: "#ddd",
-  fontSize: "20px",
-  lineHeight: "1.4",
-  maxWidth: "520px",
-  marginTop: "22px",
-};
-
-const benefitsStyle = {
-  marginTop: "30px",
-  display: "flex",
-  gap: "22px",
-  flexWrap: "wrap",
-};
-
-const benefitItemStyle = {
-  display: "flex",
-  alignItems: "center",
-  gap: "10px",
-  color: "white",
-  fontSize: "13px",
-};
-
-const benefitIconStyle = {
-  color: "#dc2626",
-  flexShrink: 0,
-};
-
-const benefitDescriptionStyle = {
-  color: "#aaa",
-  margin: "3px 0 0",
-};
-
-const phoneMockupStyle = {
-  position: "absolute",
-  right: "60px",
-  bottom: "35px",
-  width: "290px",
-  height: "280px",
-  transform: "rotate(-8deg)",
-  opacity: 0.92,
-};
-
-const phoneScreenStyle = {
-  position: "absolute",
-  right: "50px",
-  top: "0",
-  width: "150px",
-  height: "260px",
-  borderRadius: "22px",
-  border: "2px solid #555",
-  background: "linear-gradient(160deg, #222, #050505)",
-  boxShadow: "0 20px 50px rgba(0,0,0,0.6)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-const phoneBodyStyle = {
-  position: "absolute",
-  right: "0",
-  top: "35px",
-  width: "155px",
-  height: "245px",
-  borderRadius: "20px",
-  border: "2px solid #777",
-  background: "linear-gradient(160deg, #111, #333 45%, #060606 100%)",
-  boxShadow: "0 20px 50px rgba(0,0,0,0.7)",
-};
-
-const phoneBatteryStyle = {
-  position: "absolute",
-  left: "35px",
-  top: "70px",
-  width: "80px",
-  height: "105px",
-  borderRadius: "8px",
-  backgroundColor: "#111",
-  border: "1px solid #555",
-  color: "#777",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  fontSize: "13px",
-};
-
-const redDetailOneStyle = {
-  position: "absolute",
-  right: "-60px",
-  top: "-30px",
-  width: "180px",
-  height: "18px",
-  backgroundColor: "#dc2626",
-  transform: "rotate(-38deg)",
-  opacity: 0.75,
-};
-
-const redDetailTwoStyle = {
-  position: "absolute",
-  right: "-40px",
-  bottom: "40px",
-  width: "240px",
-  height: "20px",
-  backgroundColor: "#dc2626",
-  transform: "rotate(-38deg)",
-  opacity: 0.65,
 };
 
 const brandAndInfoStyle = {

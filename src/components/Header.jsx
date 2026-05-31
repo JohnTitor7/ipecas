@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Search, MessageCircle } from "lucide-react";
 
 function Header({ logo, search, onSearchChange }) {
   const whatsappNumber = "5521995519228";
@@ -23,23 +24,19 @@ function Header({ logo, search, onSearchChange }) {
           <Link to="/" style={logoContainerStyle}>
             <img src={logo} alt="Logo i Peças" style={logoStyle} />
 
-            <div>
-              <h1 style={titleStyle}>i Peças</h1>
-
-              <p style={subtitleStyle}>Peças de reposição para celulares</p>
-            </div>
+            <h1 style={titleStyle}>i Peças</h1>
           </Link>
 
           <div style={searchContainerStyle}>
             <input
               type="text"
-              placeholder="Buscar por peças, modelos ou códigos..."
+              placeholder="Buscar por peças, modelos ou códigos"
               value={search}
               onChange={onSearchChange}
               style={searchInputStyle}
             />
 
-            <span style={searchIconStyle}>🔍</span>
+            <Search size={22} style={searchIconStyle} />
           </div>
 
           <a
@@ -48,11 +45,13 @@ function Header({ logo, search, onSearchChange }) {
             rel="noreferrer"
             style={whatsappButtonStyle}
           >
-            <span style={whatsappIconStyle}>☎</span>
+            <span style={whatsappIconStyle}>
+              <MessageCircle size={22} />
+            </span>
 
             <span>
-              <strong style={{ display: "block" }}>Fale no WhatsApp</strong>
-              <small style={{ color: "#fca5a5" }}>Atendimento rápido</small>
+              <strong style={whatsappTitleStyle}>Fale no WhatsApp</strong>
+              <small style={whatsappSubtitleStyle}>(21) 99551-9228</small>
             </span>
           </a>
         </div>
@@ -89,7 +88,7 @@ function Header({ logo, search, onSearchChange }) {
           </a>
 
           <a href="#catalogo" style={navLinkStyle}>
-            Acessórios
+            Auto-falantes
           </a>
 
           <a href="#catalogo" style={navLinkStyle}>
@@ -129,16 +128,16 @@ const topBarRightStyle = {
 const mainHeaderStyle = {
   backgroundColor: "#050505",
   padding: "18px 32px",
-  borderBottom: "1px solid #7f1d1d",
+  borderBottom: "1px solid #171717",
 };
 
 const mainHeaderContentStyle = {
   maxWidth: "1400px",
   margin: "0 auto",
   display: "grid",
-  gridTemplateColumns: "auto minmax(280px, 1fr) auto",
+  gridTemplateColumns: "auto minmax(320px, 1fr) auto",
   alignItems: "center",
-  gap: "28px",
+  gap: "34px",
 };
 
 const logoContainerStyle = {
@@ -149,24 +148,19 @@ const logoContainerStyle = {
 };
 
 const logoStyle = {
-  width: "72px",
-  height: "72px",
-  borderRadius: "50%",
-  objectFit: "cover",
-  border: "2px solid #dc2626",
+  width: "78px",
+  height: "78px",
+  objectFit: "contain",
+  display: "block",
 };
 
 const titleStyle = {
   color: "white",
   margin: 0,
-  fontSize: "32px",
+  fontSize: "36px",
   lineHeight: 1,
-};
-
-const subtitleStyle = {
-  color: "#aaa",
-  margin: "7px 0 0",
-  fontSize: "15px",
+  fontWeight: "800",
+  whiteSpace: "nowrap",
 };
 
 const searchContainerStyle = {
@@ -191,37 +185,48 @@ const searchInputStyle = {
 };
 
 const searchIconStyle = {
-  padding: "0 20px",
-  color: "#dc2626",
-  fontSize: "22px",
+  marginRight: "18px",
+  color: "white",
+  opacity: 0.9,
+  flexShrink: 0,
 };
 
 const whatsappButtonStyle = {
   display: "flex",
   alignItems: "center",
   gap: "12px",
-  backgroundColor: "#dc2626",
+  backgroundColor: "transparent",
   color: "white",
   textDecoration: "none",
-  padding: "14px 22px",
+  padding: "12px 20px",
   borderRadius: "14px",
-  boxShadow: "0 15px 30px rgba(220, 38, 38, 0.25)",
+  border: "1px solid #dc2626",
+  boxShadow: "0 12px 30px rgba(220, 38, 38, 0.12)",
   whiteSpace: "nowrap",
 };
 
 const whatsappIconStyle = {
-  width: "34px",
-  height: "34px",
-  borderRadius: "50%",
-  border: "2px solid white",
+  color: "#dc2626",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: "18px",
+  flexShrink: 0,
+};
+
+const whatsappTitleStyle = {
+  display: "block",
+  color: "white",
+  fontSize: "15px",
+};
+
+const whatsappSubtitleStyle = {
+  color: "#ddd",
+  fontSize: "13px",
 };
 
 const navStyle = {
   backgroundColor: "#0a0a0a",
+  borderTop: "1px solid #111",
   borderBottom: "1px solid #1f1f1f",
   padding: "0 32px",
 };
