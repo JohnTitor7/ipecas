@@ -1,28 +1,79 @@
+import {
+  Battery,
+  Cable,
+  Camera,
+  Headphones,
+  MonitorSmartphone,
+  Package,
+  ShieldCheck,
+  Smartphone,
+  TabletSmartphone,
+  Wrench,
+  Zap,
+  Truck,
+  MessageCircle,
+  SearchCheck,
+  Menu,
+  ChevronRight,
+} from "lucide-react";
+
 function Hero() {
   const categories = [
-    { name: "Telas", description: "Displays e Touch Screens", icon: "📱" },
-    { name: "Baterias", description: "Baterias e Componentes", icon: "🔋" },
-    { name: "Conectores", description: "Conectores de Carga e FPC", icon: "🔌" },
-    { name: "Películas", description: "Vidros, Películas e Protetores", icon: "🛡️" },
-    { name: "Acessórios", description: "Cabos, Carregadores e Mais", icon: "🎧" },
-    { name: "Componentes", description: "Auto-falantes, Flex e Outros", icon: "⚙️" },
-    { name: "Ferramentas", description: "Ferramentas e Utilitários", icon: "🛠️" },
-    { name: "Outros", description: "Diversos", icon: "📦" },
+    {
+      name: "Telas",
+      description: "Displays e Touch Screens",
+      icon: MonitorSmartphone,
+    },
+    {
+      name: "Baterias",
+      description: "Baterias e Componentes",
+      icon: Battery,
+    },
+    {
+      name: "Conectores",
+      description: "Conectores de Carga e FPC",
+      icon: Zap,
+    },
+    {
+      name: "Películas",
+      description: "Vidros, Películas e Protetores",
+      icon: ShieldCheck,
+    },
+    {
+      name: "Acessórios",
+      description: "Cabos, Carregadores e Mais",
+      icon: Headphones,
+    },
+    {
+      name: "Componentes",
+      description: "Auto-falantes, Flex e Outros",
+      icon: Smartphone,
+    },
+    {
+      name: "Ferramentas",
+      description: "Ferramentas e Utilitários",
+      icon: Wrench,
+    },
+    {
+      name: "Outros",
+      description: "Diversos",
+      icon: Package,
+    },
   ];
 
   const benefits = [
     {
-      icon: "🏅",
+      icon: ShieldCheck,
       title: "Peças testadas",
       description: "e de qualidade",
     },
     {
-      icon: "🚚",
+      icon: Truck,
       title: "Envio rápido",
       description: "consulte disponibilidade",
     },
     {
-      icon: "🎧",
+      icon: Headphones,
       title: "Atendimento",
       description: "especializado",
     },
@@ -30,17 +81,17 @@ function Hero() {
 
   const highlights = [
     {
-      icon: "✅",
+      icon: ShieldCheck,
       title: "Peças de qualidade",
       description: "Produtos testados e selecionados",
     },
     {
-      icon: "💬",
+      icon: MessageCircle,
       title: "Atendimento via WhatsApp",
       description: "Rápido e humanizado",
     },
     {
-      icon: "🔎",
+      icon: SearchCheck,
       title: "Consulte antes de comprar",
       description: "Confira preço e disponibilidade",
     },
@@ -51,32 +102,45 @@ function Hero() {
       <div style={mainGridStyle}>
         <aside style={sidebarStyle}>
           <div style={sidebarHeaderStyle}>
-            <span>☰</span>
+            <Menu size={18} />
             <strong>CATEGORIAS</strong>
           </div>
 
           <div>
-            {categories.map((category) => (
-              <a key={category.name} href="#catalogo" style={categoryItemStyle}>
-                <span style={categoryIconStyle}>{category.icon}</span>
+            {categories.map((category) => {
+              const Icon = category.icon;
 
-                <span style={{ flex: 1 }}>
-                  <strong style={categoryNameStyle}>{category.name}</strong>
-                  <small style={categoryDescriptionStyle}>
-                    {category.description}
-                  </small>
-                </span>
+              return (
+                <a
+                  key={category.name}
+                  href="#catalogo"
+                  style={categoryItemStyle}
+                >
+                  <span style={categoryIconStyle}>
+                    <Icon size={19} />
+                  </span>
 
-                <span style={categoryArrowStyle}>›</span>
-              </a>
-            ))}
+                  <span style={{ flex: 1 }}>
+                    <strong style={categoryNameStyle}>{category.name}</strong>
+                    <small style={categoryDescriptionStyle}>
+                      {category.description}
+                    </small>
+                  </span>
+
+                  <ChevronRight size={18} style={categoryArrowStyle} />
+                </a>
+              );
+            })}
           </div>
 
           <div style={qualityBoxStyle}>
-            <div style={qualityIconStyle}>🛡️</div>
+            <ShieldCheck size={28} style={qualityIconStyle} />
 
             <div>
-              <strong style={{ color: "#f87171" }}>Qualidade e confiança</strong>
+              <strong style={{ color: "#f87171" }}>
+                Qualidade e confiança
+              </strong>
+
               <p style={qualityTextStyle}>
                 Trabalhamos com peças testadas e de alta qualidade.
               </p>
@@ -100,25 +164,47 @@ function Hero() {
               </p>
 
               <div style={benefitsStyle}>
-                {benefits.map((benefit) => (
-                  <div key={benefit.title} style={benefitItemStyle}>
-                    <span style={benefitIconStyle}>{benefit.icon}</span>
+                {benefits.map((benefit) => {
+                  const Icon = benefit.icon;
 
-                    <div>
-                      <strong>{benefit.title}</strong>
-                      <p style={benefitDescriptionStyle}>
-                        {benefit.description}
-                      </p>
+                  return (
+                    <div key={benefit.title} style={benefitItemStyle}>
+                      <Icon size={26} style={benefitIconStyle} />
+
+                      <div>
+                        <strong>{benefit.title}</strong>
+
+                        <p style={benefitDescriptionStyle}>
+                          {benefit.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
             <div style={phoneMockupStyle}>
-              <div style={phoneScreenStyle} />
+              <div style={phoneScreenStyle}>
+                <TabletSmartphone
+                  size={70}
+                  style={{
+                    color: "rgba(255,255,255,0.16)",
+                  }}
+                />
+              </div>
+
               <div style={phoneBodyStyle}>
                 <div style={phoneBatteryStyle}>Li-ion</div>
+                <Cable
+                  size={42}
+                  style={{
+                    position: "absolute",
+                    bottom: "28px",
+                    right: "32px",
+                    color: "rgba(255,255,255,0.18)",
+                  }}
+                />
               </div>
             </div>
 
@@ -141,16 +227,22 @@ function Hero() {
               </div>
             </div>
 
-            {highlights.map((highlight) => (
-              <div key={highlight.title} style={infoBoxStyle}>
-                <span style={infoIconStyle}>{highlight.icon}</span>
+            {highlights.map((highlight) => {
+              const Icon = highlight.icon;
 
-                <div>
-                  <strong>{highlight.title}</strong>
-                  <p style={infoDescriptionStyle}>{highlight.description}</p>
+              return (
+                <div key={highlight.title} style={infoBoxStyle}>
+                  <Icon size={27} style={infoIconStyle} />
+
+                  <div>
+                    <strong>{highlight.title}</strong>
+                    <p style={infoDescriptionStyle}>
+                      {highlight.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -200,8 +292,11 @@ const categoryItemStyle = {
 };
 
 const categoryIconStyle = {
-  width: "24px",
-  textAlign: "center",
+  width: "28px",
+  color: "#dc2626",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 };
 
 const categoryNameStyle = {
@@ -219,7 +314,6 @@ const categoryDescriptionStyle = {
 
 const categoryArrowStyle = {
   color: "#aaa",
-  fontSize: "22px",
 };
 
 const qualityBoxStyle = {
@@ -235,7 +329,7 @@ const qualityBoxStyle = {
 
 const qualityIconStyle = {
   color: "#dc2626",
-  fontSize: "24px",
+  flexShrink: 0,
 };
 
 const qualityTextStyle = {
@@ -308,7 +402,7 @@ const benefitItemStyle = {
 
 const benefitIconStyle = {
   color: "#dc2626",
-  fontSize: "24px",
+  flexShrink: 0,
 };
 
 const benefitDescriptionStyle = {
@@ -336,6 +430,9 @@ const phoneScreenStyle = {
   border: "2px solid #555",
   background: "linear-gradient(160deg, #222, #050505)",
   boxShadow: "0 20px 50px rgba(0,0,0,0.6)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 };
 
 const phoneBodyStyle = {
@@ -346,8 +443,7 @@ const phoneBodyStyle = {
   height: "245px",
   borderRadius: "20px",
   border: "2px solid #777",
-  background:
-    "linear-gradient(160deg, #111, #333 45%, #060606 100%)",
+  background: "linear-gradient(160deg, #111, #333 45%, #060606 100%)",
   boxShadow: "0 20px 50px rgba(0,0,0,0.7)",
 };
 
@@ -435,7 +531,7 @@ const infoBoxStyle = {
 
 const infoIconStyle = {
   color: "#dc2626",
-  fontSize: "25px",
+  flexShrink: 0,
 };
 
 const infoDescriptionStyle = {
