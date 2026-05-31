@@ -6,8 +6,20 @@ function Header({ logo, search, onSearchChange }) {
 
   return (
     <header>
-      <div style={topHeaderStyle}>
-        <div style={headerContentStyle}>
+      <div style={topBarStyle}>
+        <div style={topBarContentStyle}>
+          <span>Atendimento especializado</span>
+
+          <div style={topBarRightStyle}>
+            <span>Seg. a Sex: 08h às 18h</span>
+            <span>|</span>
+            <span>WhatsApp: (21) 99551-9228</span>
+          </div>
+        </div>
+      </div>
+
+      <div style={mainHeaderStyle}>
+        <div style={mainHeaderContentStyle}>
           <Link to="/" style={logoContainerStyle}>
             <img src={logo} alt="Logo i Peças" style={logoStyle} />
 
@@ -21,7 +33,7 @@ function Header({ logo, search, onSearchChange }) {
           <div style={searchContainerStyle}>
             <input
               type="text"
-              placeholder="O que está procurando?"
+              placeholder="Buscar por peças, modelos ou códigos..."
               value={search}
               onChange={onSearchChange}
               style={searchInputStyle}
@@ -36,14 +48,21 @@ function Header({ logo, search, onSearchChange }) {
             rel="noreferrer"
             style={whatsappButtonStyle}
           >
-            WhatsApp
+            <span style={whatsappIconStyle}>☎</span>
+
+            <span>
+              <strong style={{ display: "block" }}>Fale no WhatsApp</strong>
+              <small style={{ color: "#fca5a5" }}>Atendimento rápido</small>
+            </span>
           </a>
         </div>
       </div>
 
       <nav style={navStyle}>
         <div style={navContentStyle}>
-          <span style={menuLabelStyle}>☰ Menu</span>
+          <a href="#" style={activeNavLinkStyle}>
+            Início
+          </a>
 
           <a href="#catalogo" style={navLinkStyle}>
             Telas
@@ -58,11 +77,23 @@ function Header({ logo, search, onSearchChange }) {
           </a>
 
           <a href="#catalogo" style={navLinkStyle}>
-            Películas
+            Flex e Cabos
+          </a>
+
+          <a href="#catalogo" style={navLinkStyle}>
+            Câmeras
+          </a>
+
+          <a href="#catalogo" style={navLinkStyle}>
+            Carcaças
           </a>
 
           <a href="#catalogo" style={navLinkStyle}>
             Acessórios
+          </a>
+
+          <a href="#catalogo" style={navLinkStyle}>
+            Outros
           </a>
         </div>
       </nav>
@@ -70,20 +101,44 @@ function Header({ logo, search, onSearchChange }) {
   );
 }
 
-const topHeaderStyle = {
+const topBarStyle = {
   backgroundColor: "#050505",
-  borderBottom: "1px solid #7f1d1d",
-  padding: "18px 40px",
+  borderBottom: "1px solid #171717",
+  padding: "8px 32px",
 };
 
-const headerContentStyle = {
-  maxWidth: "1200px",
+const topBarContentStyle = {
+  maxWidth: "1400px",
   margin: "0 auto",
   display: "flex",
-  alignItems: "center",
   justifyContent: "space-between",
-  gap: "24px",
+  alignItems: "center",
+  gap: "16px",
   flexWrap: "wrap",
+  color: "#aaa",
+  fontSize: "13px",
+};
+
+const topBarRightStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+  flexWrap: "wrap",
+};
+
+const mainHeaderStyle = {
+  backgroundColor: "#050505",
+  padding: "18px 32px",
+  borderBottom: "1px solid #7f1d1d",
+};
+
+const mainHeaderContentStyle = {
+  maxWidth: "1400px",
+  margin: "0 auto",
+  display: "grid",
+  gridTemplateColumns: "auto minmax(280px, 1fr) auto",
+  alignItems: "center",
+  gap: "28px",
 };
 
 const logoContainerStyle = {
@@ -94,8 +149,8 @@ const logoContainerStyle = {
 };
 
 const logoStyle = {
-  width: "70px",
-  height: "70px",
+  width: "72px",
+  height: "72px",
   borderRadius: "50%",
   objectFit: "cover",
   border: "2px solid #dc2626",
@@ -104,31 +159,30 @@ const logoStyle = {
 const titleStyle = {
   color: "white",
   margin: 0,
-  fontSize: "30px",
+  fontSize: "32px",
   lineHeight: 1,
 };
 
 const subtitleStyle = {
   color: "#aaa",
-  margin: "6px 0 0",
+  margin: "7px 0 0",
   fontSize: "15px",
 };
 
 const searchContainerStyle = {
-  flex: 1,
-  minWidth: "260px",
-  maxWidth: "520px",
+  width: "100%",
   display: "flex",
   alignItems: "center",
   backgroundColor: "#111",
   border: "1px solid #333",
-  borderRadius: "14px",
+  borderRadius: "16px",
   overflow: "hidden",
+  boxShadow: "0 12px 30px rgba(0, 0, 0, 0.25)",
 };
 
 const searchInputStyle = {
   flex: 1,
-  padding: "15px 16px",
+  padding: "17px 18px",
   border: "none",
   outline: "none",
   backgroundColor: "transparent",
@@ -137,47 +191,64 @@ const searchInputStyle = {
 };
 
 const searchIconStyle = {
-  padding: "0 18px",
+  padding: "0 20px",
   color: "#dc2626",
   fontSize: "22px",
-  fontWeight: "bold",
 };
 
 const whatsappButtonStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "12px",
   backgroundColor: "#dc2626",
   color: "white",
   textDecoration: "none",
-  padding: "14px 24px",
+  padding: "14px 22px",
   borderRadius: "14px",
-  fontWeight: "bold",
-  boxShadow: "0 10px 25px rgba(220, 38, 38, 0.25)",
+  boxShadow: "0 15px 30px rgba(220, 38, 38, 0.25)",
+  whiteSpace: "nowrap",
+};
+
+const whatsappIconStyle = {
+  width: "34px",
+  height: "34px",
+  borderRadius: "50%",
+  border: "2px solid white",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: "18px",
 };
 
 const navStyle = {
   backgroundColor: "#0a0a0a",
   borderBottom: "1px solid #1f1f1f",
-  padding: "12px 40px",
+  padding: "0 32px",
 };
 
 const navContentStyle = {
-  maxWidth: "1200px",
+  maxWidth: "1400px",
   margin: "0 auto",
   display: "flex",
   alignItems: "center",
-  gap: "24px",
-  flexWrap: "wrap",
-  color: "white",
-  fontSize: "15px",
-  fontWeight: "600",
-};
-
-const menuLabelStyle = {
-  color: "#dc2626",
+  gap: "34px",
+  overflowX: "auto",
 };
 
 const navLinkStyle = {
   color: "#ddd",
   textDecoration: "none",
+  fontWeight: "bold",
+  fontSize: "14px",
+  textTransform: "uppercase",
+  padding: "18px 0",
+  whiteSpace: "nowrap",
+};
+
+const activeNavLinkStyle = {
+  ...navLinkStyle,
+  color: "#dc2626",
+  borderBottom: "3px solid #dc2626",
 };
 
 export default Header;
