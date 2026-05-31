@@ -1,53 +1,74 @@
 # i Peças
 
-Site de catálogo para uma loja de peças de reposição para celulares.
+Site desenvolvido para consulta de peças de reposição para celulares, com foco em visualização de produtos, preços e disponibilidade.
 
-O projeto foi desenvolvido com React e Vite, com o objetivo de permitir que clientes consultem produtos, preços, disponibilidade e entrem em contato pelo WhatsApp.
+O projeto foi criado para uma loja de peças de celular, permitindo que clientes consultem itens disponíveis e entrem em contato pelo WhatsApp para confirmar preço, estoque e atendimento.
 
-## Preview
+## Deploy
 
-Versão inicial do projeto em desenvolvimento.
+Acesse o projeto publicado:
+
+https://ipecas-weld.vercel.app/
 
 ## Funcionalidades
 
-- Catálogo de produtos
-- Busca por nome, marca ou categoria
-- Exibição de preço e disponibilidade
-- Cards de produtos com imagem
-- Botão de contato via WhatsApp
-- Painel administrativo inicial
-- Cadastro de produtos pelo próprio site
-- Persistência temporária com LocalStorage
+* Catálogo de produtos
+* Busca por peça, marca, modelo ou categoria
+* Cards com imagem, nome, modelo, preço e status de estoque
+* Botão de consulta via WhatsApp
+* Layout responsivo para desktop e celular
+* Página administrativa em `/admin`
+* Cadastro de produtos
+* Edição de produtos
+* Remoção de produtos
+* Restauração dos produtos iniciais
+* Armazenamento temporário com LocalStorage
 
 ## Tecnologias utilizadas
 
-- React
-- Vite
-- JavaScript
-- HTML
-- CSS
-- LocalStorage
+* React
+* Vite
+* JavaScript
+* CSS
+* React Router DOM
+* Lucide React
+* LocalStorage
+* Vercel
+
+## Objetivo do projeto
+
+O objetivo do i Peças é funcionar como uma vitrine digital para consulta de produtos, sem carrinho de compras e sem checkout.
+
+A proposta é que o cliente visualize os produtos disponíveis e entre em contato diretamente pelo WhatsApp para confirmar informações com a loja.
 
 ## Estrutura do projeto
 
-```text
+```txt
 src/
 ├── assets/
-│   ├── logo-ipecas.png
-│   └── products/
+│   ├── products/
+│   ├── hero-banner.png
+│   ├── hero.png
+│   └── logo-ipecas.png
 ├── components/
 │   ├── AdminPanel.jsx
+│   ├── AdminProductList.jsx
 │   ├── Catalog.jsx
+│   ├── CatalogSidebar.jsx
 │   ├── Header.jsx
+│   ├── Hero.css
 │   ├── Hero.jsx
-│   └── ProductCard.jsx
+│   ├── ProductCard.jsx
+│   └── ProductForm.jsx
 ├── data/
 │   └── products.js
+├── App.css
 ├── App.jsx
+├── index.css
 └── main.jsx
 ```
 
-## Como executar o projeto
+## Como executar localmente
 
 Clone o repositório:
 
@@ -75,26 +96,33 @@ npm run dev
 
 Acesse no navegador:
 
-```text
+```txt
 http://localhost:5173/
 ```
 
-## Objetivo do projeto
+Painel administrativo:
 
-Este projeto foi criado para atender uma necessidade real de uma loja de peças de celular: permitir que clientes consultem produtos, preços e disponibilidade de forma simples.
+```txt
+http://localhost:5173/admin
+```
 
-A ideia é evoluir o sistema para que o administrador consiga gerenciar os produtos sem precisar alterar código.
-
-## Próximas melhorias
-
-- Login para administrador
-- Banco de dados com Firebase
-- Upload de imagens pelo painel
-- Edição e remoção de produtos
-- Deploy online
-- Melhorias de responsividade
-- Separação dos estilos em arquivos próprios
-
-## Status
+## Status do projeto
 
 Projeto em desenvolvimento.
+
+A versão atual utiliza LocalStorage para simular o cadastro, edição e remoção de produtos. Futuramente, a ideia é conectar o painel administrativo a um banco de dados real.
+
+## Próximos passos
+
+* Implementar login para o painel administrativo
+* Conectar com Firebase ou outro banco de dados
+* Adicionar upload real de imagens
+* Melhorar responsividade
+* Padronizar imagens dos produtos
+* Criar domínio personalizado
+
+## Autor
+
+Desenvolvido por Ryan Vieira.
+
+GitHub: https://github.com/JohnTitor7
