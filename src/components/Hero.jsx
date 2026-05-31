@@ -1,120 +1,259 @@
 function Hero() {
   const categories = [
-    "Telas",
-    "Baterias",
-    "Conectores",
-    "Películas",
-    "Capas",
-    "Cabos",
-    "Áudio",
-    "Acessórios",
+    { name: "Telas", description: "Displays e Touch Screens", icon: "📱" },
+    { name: "Baterias", description: "Baterias e Componentes", icon: "🔋" },
+    { name: "Conectores", description: "Conectores de Carga e FPC", icon: "🔌" },
+    { name: "Películas", description: "Vidros, Películas e Protetores", icon: "🛡️" },
+    { name: "Acessórios", description: "Cabos, Carregadores e Mais", icon: "🎧" },
+    { name: "Componentes", description: "Auto-falantes, Flex e Outros", icon: "⚙️" },
+    { name: "Ferramentas", description: "Ferramentas e Utilitários", icon: "🛠️" },
+    { name: "Outros", description: "Diversos", icon: "📦" },
+  ];
+
+  const benefits = [
+    {
+      icon: "🏅",
+      title: "Peças testadas",
+      description: "e de qualidade",
+    },
+    {
+      icon: "🚚",
+      title: "Envio rápido",
+      description: "consulte disponibilidade",
+    },
+    {
+      icon: "🎧",
+      title: "Atendimento",
+      description: "especializado",
+    },
+  ];
+
+  const highlights = [
+    {
+      icon: "✅",
+      title: "Peças de qualidade",
+      description: "Produtos testados e selecionados",
+    },
+    {
+      icon: "💬",
+      title: "Atendimento via WhatsApp",
+      description: "Rápido e humanizado",
+    },
+    {
+      icon: "🔎",
+      title: "Consulte antes de comprar",
+      description: "Confira preço e disponibilidade",
+    },
   ];
 
   return (
-    <section style={heroSectionStyle}>
-      <div style={heroGridStyle}>
-        <aside style={categoriesBoxStyle}>
-          <div style={categoriesHeaderStyle}>☰ Categorias</div>
+    <section style={sectionStyle}>
+      <div style={mainGridStyle}>
+        <aside style={sidebarStyle}>
+          <div style={sidebarHeaderStyle}>
+            <span>☰</span>
+            <strong>CATEGORIAS</strong>
+          </div>
 
           <div>
             {categories.map((category) => (
-              <a key={category} href="#catalogo" style={categoryLinkStyle}>
-                {category}
+              <a key={category.name} href="#catalogo" style={categoryItemStyle}>
+                <span style={categoryIconStyle}>{category.icon}</span>
+
+                <span style={{ flex: 1 }}>
+                  <strong style={categoryNameStyle}>{category.name}</strong>
+                  <small style={categoryDescriptionStyle}>
+                    {category.description}
+                  </small>
+                </span>
+
                 <span style={categoryArrowStyle}>›</span>
               </a>
             ))}
           </div>
-        </aside>
 
-        <div style={bannerStyle}>
-          <div style={bannerContentStyle}>
-            <p style={labelStyle}>i Peças</p>
+          <div style={qualityBoxStyle}>
+            <div style={qualityIconStyle}>🛡️</div>
 
-            <h2 style={titleStyle}>
-              Peças de reposição para celulares com consulta rápida.
-            </h2>
-
-            <p style={descriptionStyle}>
-              Encontre telas, baterias, conectores, películas e acessórios com
-              preço e disponibilidade atualizados.
-            </p>
-
-            <div style={buttonGroupStyle}>
-              <a href="#catalogo" style={primaryButtonStyle}>
-                Ver catálogo
-              </a>
-
-              <a
-                href="https://wa.me/5521995519228"
-                target="_blank"
-                rel="noreferrer"
-                style={secondaryButtonStyle}
-              >
-                Falar no WhatsApp
-              </a>
+            <div>
+              <strong style={{ color: "#f87171" }}>Qualidade e confiança</strong>
+              <p style={qualityTextStyle}>
+                Trabalhamos com peças testadas e de alta qualidade.
+              </p>
             </div>
           </div>
+        </aside>
 
-          <div style={redBlurStyle} />
+        <div>
+          <div style={bannerStyle}>
+            <div style={bannerContentStyle}>
+              <p style={bannerLabelStyle}>#ipeças</p>
 
-          <div style={watermarkStyle}>iP</div>
+              <h2 style={bannerTitleStyle}>
+                Peças e acessórios
+                <span style={bannerTitleHighlightStyle}> para celulares</span>
+              </h2>
+
+              <p style={bannerDescriptionStyle}>
+                Consulte preços e disponibilidade pelo WhatsApp com um de nossos
+                atendentes.
+              </p>
+
+              <div style={benefitsStyle}>
+                {benefits.map((benefit) => (
+                  <div key={benefit.title} style={benefitItemStyle}>
+                    <span style={benefitIconStyle}>{benefit.icon}</span>
+
+                    <div>
+                      <strong>{benefit.title}</strong>
+                      <p style={benefitDescriptionStyle}>
+                        {benefit.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={phoneMockupStyle}>
+              <div style={phoneScreenStyle} />
+              <div style={phoneBodyStyle}>
+                <div style={phoneBatteryStyle}>Li-ion</div>
+              </div>
+            </div>
+
+            <div style={redDetailOneStyle} />
+            <div style={redDetailTwoStyle} />
+          </div>
+
+          <div style={brandAndInfoStyle}>
+            <div style={brandsBoxStyle}>
+              <p style={brandTitleStyle}>Marcas mais buscadas</p>
+
+              <div style={brandListStyle}>
+                {["Apple", "Samsung", "Motorola", "Xiaomi", "Realme", "Infinix"].map(
+                  (brand) => (
+                    <span key={brand} style={brandChipStyle}>
+                      {brand}
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+
+            {highlights.map((highlight) => (
+              <div key={highlight.title} style={infoBoxStyle}>
+                <span style={infoIconStyle}>{highlight.icon}</span>
+
+                <div>
+                  <strong>{highlight.title}</strong>
+                  <p style={infoDescriptionStyle}>{highlight.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-const heroSectionStyle = {
-  maxWidth: "1200px",
+const sectionStyle = {
+  maxWidth: "1400px",
   margin: "0 auto",
-  padding: "35px 40px 60px",
+  padding: "24px 32px 36px",
 };
 
-const heroGridStyle = {
+const mainGridStyle = {
   display: "grid",
-  gridTemplateColumns: "260px 1fr",
-  gap: "24px",
+  gridTemplateColumns: "270px 1fr",
+  gap: "22px",
   alignItems: "stretch",
 };
 
-const categoriesBoxStyle = {
+const sidebarStyle = {
   backgroundColor: "#111",
-  border: "1px solid #333",
-  borderRadius: "18px",
+  border: "1px solid #2a2a2a",
+  borderRadius: "16px",
   overflow: "hidden",
+  height: "fit-content",
 };
 
-const categoriesHeaderStyle = {
+const sidebarHeaderStyle = {
   backgroundColor: "#dc2626",
   color: "white",
-  padding: "16px 20px",
-  fontWeight: "bold",
-  fontSize: "16px",
-};
-
-const categoryLinkStyle = {
+  padding: "16px 18px",
   display: "flex",
-  justifyContent: "space-between",
   alignItems: "center",
-  padding: "14px 20px",
-  color: "#ddd",
-  textDecoration: "none",
-  borderBottom: "1px solid #222",
+  gap: "12px",
   fontSize: "15px",
 };
 
+const categoryItemStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "12px",
+  padding: "13px 16px",
+  borderBottom: "1px solid #242424",
+  color: "#ddd",
+  textDecoration: "none",
+};
+
+const categoryIconStyle = {
+  width: "24px",
+  textAlign: "center",
+};
+
+const categoryNameStyle = {
+  display: "block",
+  color: "white",
+  fontSize: "14px",
+};
+
+const categoryDescriptionStyle = {
+  display: "block",
+  color: "#888",
+  fontSize: "12px",
+  marginTop: "2px",
+};
+
 const categoryArrowStyle = {
+  color: "#aaa",
+  fontSize: "22px",
+};
+
+const qualityBoxStyle = {
+  margin: "14px",
+  padding: "14px",
+  backgroundColor: "#0a0a0a",
+  border: "1px solid #333",
+  borderRadius: "14px",
+  display: "flex",
+  gap: "12px",
+  alignItems: "center",
+};
+
+const qualityIconStyle = {
   color: "#dc2626",
+  fontSize: "24px",
+};
+
+const qualityTextStyle = {
+  color: "#aaa",
+  fontSize: "12px",
+  margin: "4px 0 0",
+  lineHeight: "1.4",
 };
 
 const bannerStyle = {
   position: "relative",
-  minHeight: "360px",
-  background: "linear-gradient(135deg, #111 0%, #050505 55%, #450a0a 100%)",
-  border: "1px solid #333",
-  borderRadius: "22px",
+  minHeight: "365px",
+  background:
+    "radial-gradient(circle at 75% 50%, rgba(220, 38, 38, 0.28), transparent 30%), linear-gradient(135deg, #141414 0%, #050505 55%, #1a0505 100%)",
+  border: "1px solid #2a2a2a",
+  borderRadius: "16px",
   overflow: "hidden",
-  padding: "45px",
+  padding: "50px",
   display: "flex",
   alignItems: "center",
 };
@@ -125,72 +264,184 @@ const bannerContentStyle = {
   zIndex: 2,
 };
 
-const labelStyle = {
+const bannerLabelStyle = {
   color: "#dc2626",
+  margin: "0 0 10px",
   fontWeight: "bold",
-  textTransform: "uppercase",
-  letterSpacing: "1px",
-  marginBottom: "14px",
 };
 
-const titleStyle = {
-  fontSize: "44px",
-  lineHeight: "1.1",
-  margin: 0,
+const bannerTitleStyle = {
   color: "white",
+  fontSize: "56px",
+  lineHeight: "1",
+  margin: 0,
+  fontWeight: "900",
 };
 
-const descriptionStyle = {
-  color: "#bbb",
-  fontSize: "18px",
-  marginTop: "20px",
-  maxWidth: "560px",
+const bannerTitleHighlightStyle = {
+  display: "block",
+  color: "#dc2626",
 };
 
-const buttonGroupStyle = {
+const bannerDescriptionStyle = {
+  color: "#ddd",
+  fontSize: "20px",
+  lineHeight: "1.4",
+  maxWidth: "520px",
+  marginTop: "22px",
+};
+
+const benefitsStyle = {
   marginTop: "30px",
   display: "flex",
-  gap: "15px",
+  gap: "22px",
   flexWrap: "wrap",
 };
 
-const primaryButtonStyle = {
-  backgroundColor: "#dc2626",
+const benefitItemStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
   color: "white",
-  textDecoration: "none",
-  padding: "14px 22px",
-  borderRadius: "12px",
-  fontWeight: "bold",
+  fontSize: "13px",
 };
 
-const secondaryButtonStyle = {
-  backgroundColor: "transparent",
-  color: "white",
-  textDecoration: "none",
-  padding: "14px 22px",
-  borderRadius: "12px",
+const benefitIconStyle = {
+  color: "#dc2626",
+  fontSize: "24px",
+};
+
+const benefitDescriptionStyle = {
+  color: "#aaa",
+  margin: "3px 0 0",
+};
+
+const phoneMockupStyle = {
+  position: "absolute",
+  right: "60px",
+  bottom: "35px",
+  width: "290px",
+  height: "280px",
+  transform: "rotate(-8deg)",
+  opacity: 0.92,
+};
+
+const phoneScreenStyle = {
+  position: "absolute",
+  right: "50px",
+  top: "0",
+  width: "150px",
+  height: "260px",
+  borderRadius: "22px",
+  border: "2px solid #555",
+  background: "linear-gradient(160deg, #222, #050505)",
+  boxShadow: "0 20px 50px rgba(0,0,0,0.6)",
+};
+
+const phoneBodyStyle = {
+  position: "absolute",
+  right: "0",
+  top: "35px",
+  width: "155px",
+  height: "245px",
+  borderRadius: "20px",
+  border: "2px solid #777",
+  background:
+    "linear-gradient(160deg, #111, #333 45%, #060606 100%)",
+  boxShadow: "0 20px 50px rgba(0,0,0,0.7)",
+};
+
+const phoneBatteryStyle = {
+  position: "absolute",
+  left: "35px",
+  top: "70px",
+  width: "80px",
+  height: "105px",
+  borderRadius: "8px",
+  backgroundColor: "#111",
   border: "1px solid #555",
+  color: "#777",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: "13px",
+};
+
+const redDetailOneStyle = {
+  position: "absolute",
+  right: "-60px",
+  top: "-30px",
+  width: "180px",
+  height: "18px",
+  backgroundColor: "#dc2626",
+  transform: "rotate(-38deg)",
+  opacity: 0.75,
+};
+
+const redDetailTwoStyle = {
+  position: "absolute",
+  right: "-40px",
+  bottom: "40px",
+  width: "240px",
+  height: "20px",
+  backgroundColor: "#dc2626",
+  transform: "rotate(-38deg)",
+  opacity: 0.65,
+};
+
+const brandAndInfoStyle = {
+  marginTop: "14px",
+  display: "grid",
+  gridTemplateColumns: "1.5fr 1fr 1fr 1fr",
+  gap: "12px",
+};
+
+const brandsBoxStyle = {
+  backgroundColor: "#111",
+  border: "1px solid #2a2a2a",
+  borderRadius: "14px",
+  padding: "14px",
+};
+
+const brandTitleStyle = {
+  color: "white",
+  margin: "0 0 10px",
   fontWeight: "bold",
 };
 
-const redBlurStyle = {
-  position: "absolute",
-  right: "-80px",
-  bottom: "-100px",
-  width: "340px",
-  height: "340px",
-  borderRadius: "50%",
-  backgroundColor: "rgba(220, 38, 38, 0.18)",
-  filter: "blur(4px)",
+const brandListStyle = {
+  display: "flex",
+  gap: "8px",
+  flexWrap: "wrap",
 };
 
-const watermarkStyle = {
-  position: "absolute",
-  right: "40px",
-  top: "45px",
-  color: "rgba(255,255,255,0.06)",
-  fontSize: "120px",
-  fontWeight: "bold",
+const brandChipStyle = {
+  color: "#ddd",
+  border: "1px solid #333",
+  borderRadius: "10px",
+  padding: "8px 12px",
+  fontSize: "13px",
+};
+
+const infoBoxStyle = {
+  backgroundColor: "#111",
+  border: "1px solid #2a2a2a",
+  borderRadius: "14px",
+  padding: "14px",
+  display: "flex",
+  alignItems: "center",
+  gap: "12px",
+};
+
+const infoIconStyle = {
+  color: "#dc2626",
+  fontSize: "25px",
+};
+
+const infoDescriptionStyle = {
+  color: "#aaa",
+  margin: "4px 0 0",
+  fontSize: "13px",
 };
 
 export default Hero;

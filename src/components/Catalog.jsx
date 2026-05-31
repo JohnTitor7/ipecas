@@ -1,26 +1,28 @@
 import ProductCard from "./ProductCard";
-import CatalogSidebar from "./CatalogSidebar";
 
-function Catalog({ search, setSearch, products, selectedCategory, onSelectCategory }) {
+function Catalog({ search, setSearch, products }) {
   const hasProducts = products.length > 0;
 
   return (
     <section id="catalogo" style={catalogSectionStyle}>
       <div style={catalogHeaderStyle}>
         <div>
-          <p style={labelStyle}>Catálogo</p>
+          <div style={sectionLabelWrapperStyle}>
+            <span style={sectionIconStyle}>▣</span>
+            <p style={labelStyle}>Destaques</p>
+          </div>
 
-          <h2 style={titleStyle}>Peças disponíveis</h2>
+          <h2 style={titleStyle}>Produtos em destaque</h2>
 
           <p style={descriptionStyle}>
-            Consulte telas, baterias, conectores e acessórios disponíveis.
+            Consulte peças, acessórios, preços e disponibilidade diretamente
+            pelo WhatsApp.
           </p>
         </div>
 
-        <p style={counterStyle}>
-          {products.length} produto{products.length !== 1 ? "s" : ""} encontrado
-          {products.length !== 1 ? "s" : ""}
-        </p>
+        <a href="#catalogo" style={viewAllStyle}>
+          Ver todos os produtos →
+        </a>
       </div>
 
       <div style={searchBoxStyle}>
@@ -33,51 +35,42 @@ function Catalog({ search, setSearch, products, selectedCategory, onSelectCatego
         />
       </div>
 
-      <div style={catalogLayoutStyle}>
-        <CatalogSidebar
-          selectedCategory={selectedCategory}
-          onSelectCategory={onSelectCategory}
-        />
-
-        <div>
-          {hasProducts ? (
-            <div style={productsGridStyle}>
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div style={emptyStateStyle}>
-              <h3 style={emptyTitleStyle}>Nenhum produto encontrado</h3>
-
-              <p style={emptyTextStyle}>
-                Não encontramos nenhum produto com esse termo. Tente buscar por
-                marca, modelo ou categoria.
-              </p>
-
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                style={clearButtonStyle}
-              >
-                Limpar busca
-              </button>
-            </div>
-          )}
+      {hasProducts ? (
+        <div style={productsGridStyle}>
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
-      </div>
+      ) : (
+        <div style={emptyStateStyle}>
+          <h3 style={emptyTitleStyle}>Nenhum produto encontrado</h3>
+
+          <p style={emptyTextStyle}>
+            Não encontramos nenhum produto com esse termo. Tente buscar por
+            marca, modelo ou categoria.
+          </p>
+
+          <button
+            type="button"
+            onClick={() => setSearch("")}
+            style={clearButtonStyle}
+          >
+            Limpar busca
+          </button>
+        </div>
+      )}
     </section>
   );
 }
 
 const catalogSectionStyle = {
-  maxWidth: "1200px",
+  maxWidth: "1400px",
   margin: "0 auto",
-  padding: "40px",
+  padding: "20px 32px 50px",
 };
 
 const catalogHeaderStyle = {
-  marginBottom: "28px",
+  marginBottom: "22px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "flex-end",
@@ -85,17 +78,29 @@ const catalogHeaderStyle = {
   flexWrap: "wrap",
 };
 
-const labelStyle = {
+const sectionLabelWrapperStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+  marginBottom: "6px",
+};
+
+const sectionIconStyle = {
   color: "#dc2626",
+  fontSize: "15px",
+};
+
+const labelStyle = {
+  color: "white",
   fontWeight: "bold",
-  margin: "0 0 8px",
+  margin: 0,
   textTransform: "uppercase",
-  letterSpacing: "1px",
-  fontSize: "14px",
+  letterSpacing: "0.5px",
+  fontSize: "18px",
 };
 
 const titleStyle = {
-  fontSize: "34px",
+  fontSize: "30px",
   margin: 0,
   color: "white",
 };
@@ -106,18 +111,19 @@ const descriptionStyle = {
   fontSize: "15px",
 };
 
-const counterStyle = {
-  color: "#aaa",
-  margin: 0,
-  fontSize: "14px",
+const viewAllStyle = {
+  color: "#dc2626",
+  textDecoration: "none",
+  fontWeight: "bold",
+  fontSize: "15px",
 };
 
 const searchBoxStyle = {
   backgroundColor: "#111",
-  border: "1px solid #333",
-  borderRadius: "18px",
-  padding: "18px",
-  marginBottom: "28px",
+  border: "1px solid #2a2a2a",
+  borderRadius: "16px",
+  padding: "16px",
+  marginBottom: "24px",
 };
 
 const searchInputStyle = {
@@ -132,17 +138,10 @@ const searchInputStyle = {
   boxSizing: "border-box",
 };
 
-const catalogLayoutStyle = {
-  display: "grid",
-  gridTemplateColumns: "260px 1fr",
-  gap: "24px",
-  alignItems: "start",
-};
-
 const productsGridStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))",
-  gap: "22px",
+  gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+  gap: "18px",
 };
 
 const emptyStateStyle = {
