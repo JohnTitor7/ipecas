@@ -49,10 +49,10 @@ function AdminPanel({
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (!formData.name || !formData.price) {
-      alert("Preencha pelo menos o nome e o preço do produto.");
-      return;
-    }
+    if (!formData.name || !formData.category || !formData.price) {
+  alert("Preencha pelo menos nome, categoria e preço do produto.");
+  return;
+}
 
     if (editingProductId) {
       onUpdateProduct({
