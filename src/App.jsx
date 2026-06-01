@@ -8,6 +8,7 @@ import { products as initialProducts } from "./data/products";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Catalog from "./components/Catalog";
+import Footer from "./components/Footer";
 import AdminPanel from "./components/AdminPanel";
 import CategoryPage from "./components/CategoryPage";
 import Login from "./components/Login";
@@ -174,15 +175,18 @@ function App() {
               ) : isHomePage ? (
                 <>
                   <Hero onSelectCategory={handleSelectCategory} />
-
                   <Catalog products={searchedProducts} />
+                  <Footer />
                 </>
               ) : (
-                <CategoryPage
-                  category={selectedCategory}
-                  products={searchedProducts}
-                  onClearCategory={handleClearCategory}
-                />
+                <>
+                  <CategoryPage
+                    category={selectedCategory}
+                    products={searchedProducts}
+                    onClearCategory={handleClearCategory}
+                  />
+                  <Footer />
+                </>
               )}
             </>
           }
