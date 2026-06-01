@@ -24,6 +24,11 @@ function AdminPanel({
   const [formData, setFormData] = useState(initialFormData);
   const [editingProductId, setEditingProductId] = useState(null);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
+  const [deletingProductId, setDeletingProductId] = useState(null);
+  const [feedbackMessage, setFeedbackMessage] = useState(null);
+
   function handleChange(event) {
     const { name, value } = event.target;
 
@@ -33,11 +38,11 @@ function AdminPanel({
     }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     if (!formData.name || !formData.category || !formData.price) {
-      alert("Preencha pelo menos nome, categoria e preço do produto.");
+      showFeedback("Preencha pelo menos nome, categoria e preço.", "error");
       return;
     }
 
@@ -52,16 +57,29 @@ function AdminPanel({
       image: formData.image.trim(),
     };
 
-    if (editingProductId) {
-      onUpdateProduct({
-        id: editingProductId,
-        ...productData,
-      });
-    } else {
-      onAddProduct(productData);
-    }
+    try {
+      setIsSubmitting(true);
 
-    resetForm();
+      if (editingProductId) {
+        await onUpdateProduct({
+          id: editingProductId,
+          ...productData,
+        });
+
+        showFeedback("Produto atualizado com sucesso.", "success");
+      } else {
+        await onAddProduct(productData);
+
+        showFeedback("Produto cadastrado com sucesso.", "success");
+      }
+
+      resetForm();
+    } catch (error) {
+      console.error("Erro ao salvar produto:", error);
+      showFeedback("Erro ao salvar produto. Tente novamente.", "error");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function handleEditProduct(product) {
@@ -84,6 +102,53 @@ function AdminPanel({
     });
   }
 
+  async function handleDeleteProduct(productId) {
+    const confirmDelete = window.confirm(
+      "Tem certeza que deseja remover este produto?"
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      setDeletingProductId(productId);
+
+      await onDeleteProduct(productId);
+
+      showFeedback("Produto removido com sucesso.", "success");
+    } catch (error) {
+      console.error("Erro ao remover produto:", error);
+      showFeedback("Erro ao remover produto. Tente novamente.", "error");
+    } finally {
+      setDeletingProductId(null);
+    }
+  }
+
+  async function handleResetProducts() {
+    const confirmReset = window.confirm(
+      "Tem certeza que deseja restaurar os produtos iniciais? Isso apagará as alterações atuais."
+    );
+
+    if (!confirmReset) {
+      return;
+    }
+
+    try {
+      setIsResetting(true);
+
+      await onResetProducts();
+
+      resetForm();
+      showFeedback("Produtos iniciais restaurados com sucesso.", "success");
+    } catch (error) {
+      console.error("Erro ao restaurar produtos:", error);
+      showFeedback("Erro ao restaurar produtos. Tente novamente.", "error");
+    } finally {
+      setIsResetting(false);
+    }
+  }
+
   function handleCancelEdit() {
     resetForm();
   }
@@ -91,6 +156,17 @@ function AdminPanel({
   function resetForm() {
     setFormData(initialFormData);
     setEditingProductId(null);
+  }
+
+  function showFeedback(message, type) {
+    setFeedbackMessage({
+      message,
+      type,
+    });
+
+    window.setTimeout(() => {
+      setFeedbackMessage(null);
+    }, 3500);
   }
 
   return (
@@ -108,14 +184,33 @@ function AdminPanel({
           </p>
         </div>
 
-        <button type="button" onClick={onResetProducts} style={resetButtonStyle}>
-          Restaurar produtos iniciais
+        <button
+          type="button"
+          onClick={handleResetProducts}
+          style={resetButtonStyle}
+          disabled={isResetting}
+        >
+          {isResetting ? "Restaurando..." : "Restaurar produtos iniciais"}
         </button>
       </section>
+
+      {feedbackMessage && (
+        <div
+          style={{
+            ...feedbackStyle,
+            borderColor:
+              feedbackMessage.type === "success" ? "#14532d" : "#7f1d1d",
+            color: feedbackMessage.type === "success" ? "#86efac" : "#fca5a5",
+          }}
+        >
+          {feedbackMessage.message}
+        </div>
+      )}
 
       <ProductForm
         formData={formData}
         editingProductId={editingProductId}
+        isSubmitting={isSubmitting}
         onChange={handleChange}
         onSubmit={handleSubmit}
         onCancelEdit={handleCancelEdit}
@@ -123,8 +218,9 @@ function AdminPanel({
 
       <AdminProductList
         products={products}
+        deletingProductId={deletingProductId}
         onEditProduct={handleEditProduct}
-        onDeleteProduct={onDeleteProduct}
+        onDeleteProduct={handleDeleteProduct}
       />
     </main>
   );
@@ -183,6 +279,15 @@ const resetButtonStyle = {
   padding: "12px 16px",
   borderRadius: "10px",
   cursor: "pointer",
+  fontWeight: "bold",
+};
+
+const feedbackStyle = {
+  backgroundColor: "#111",
+  border: "1px solid",
+  borderRadius: "12px",
+  padding: "14px 16px",
+  marginBottom: "20px",
   fontWeight: "bold",
 };
 

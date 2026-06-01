@@ -1,4 +1,9 @@
-function AdminProductList({ products, onEditProduct, onDeleteProduct }) {
+function AdminProductList({
+  products,
+  deletingProductId,
+  onEditProduct,
+  onDeleteProduct,
+}) {
   const groupedProducts = groupProductsByCategoryAndBrand(products);
 
   if (products.length === 0) {
@@ -53,53 +58,59 @@ function AdminProductList({ products, onEditProduct, onDeleteProduct }) {
                 </div>
 
                 <div style={productsGridStyle}>
-                  {brandProducts.map((product) => (
-                    <article key={product.id} style={productCardStyle}>
-                      <div style={productInfoStyle}>
-                        <strong style={productNameStyle}>
-                          {product.name}
-                        </strong>
+                  {brandProducts.map((product) => {
+                    const isDeleting = deletingProductId === product.id;
 
-                        <span style={productDetailStyle}>
-                          {product.model || "Modelo não informado"}
-                        </span>
+                    return (
+                      <article key={product.id} style={productCardStyle}>
+                        <div style={productInfoStyle}>
+                          <strong style={productNameStyle}>
+                            {product.name}
+                          </strong>
 
-                        <span style={productPriceStyle}>{product.price}</span>
+                          <span style={productDetailStyle}>
+                            {product.model || "Modelo não informado"}
+                          </span>
 
-                        <span style={quantityStyle}>
-                          Quantidade: {product.quantity ?? 0} peça
-                          {(product.quantity ?? 0) !== 1 ? "s" : ""}
-                        </span>
+                          <span style={productPriceStyle}>{product.price}</span>
 
-                        <span
-                          style={{
-                            ...stockStyle,
-                            color: getStockColor(product.stock),
-                          }}
-                        >
-                          {product.stock}
-                        </span>
-                      </div>
+                          <span style={quantityStyle}>
+                            Quantidade: {product.quantity ?? 0} peça
+                            {(product.quantity ?? 0) !== 1 ? "s" : ""}
+                          </span>
 
-                      <div style={actionsStyle}>
-                        <button
-                          type="button"
-                          onClick={() => onEditProduct(product)}
-                          style={editButtonStyle}
-                        >
-                          Editar
-                        </button>
+                          <span
+                            style={{
+                              ...stockStyle,
+                              color: getStockColor(product.stock),
+                            }}
+                          >
+                            {product.stock}
+                          </span>
+                        </div>
 
-                        <button
-                          type="button"
-                          onClick={() => onDeleteProduct(product.id)}
-                          style={deleteButtonStyle}
-                        >
-                          Remover
-                        </button>
-                      </div>
-                    </article>
-                  ))}
+                        <div style={actionsStyle}>
+                          <button
+                            type="button"
+                            onClick={() => onEditProduct(product)}
+                            style={editButtonStyle}
+                            disabled={isDeleting}
+                          >
+                            Editar
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => onDeleteProduct(product.id)}
+                            style={deleteButtonStyle}
+                            disabled={isDeleting}
+                          >
+                            {isDeleting ? "Removendo..." : "Remover"}
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             ))}

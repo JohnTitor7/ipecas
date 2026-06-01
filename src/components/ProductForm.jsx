@@ -1,6 +1,7 @@
 function ProductForm({
   formData,
   editingProductId,
+  isSubmitting,
   onChange,
   onSubmit,
   onCancelEdit,
@@ -38,6 +39,7 @@ function ProductForm({
           value={formData.name}
           onChange={onChange}
           style={inputStyle}
+          disabled={isSubmitting}
         />
 
         <select
@@ -45,6 +47,7 @@ function ProductForm({
           value={formData.category}
           onChange={onChange}
           style={inputStyle}
+          disabled={isSubmitting}
         >
           <option value="">Selecione uma categoria</option>
 
@@ -62,6 +65,7 @@ function ProductForm({
           value={formData.brand}
           onChange={onChange}
           style={inputStyle}
+          disabled={isSubmitting}
         />
 
         <input
@@ -71,6 +75,7 @@ function ProductForm({
           value={formData.model}
           onChange={onChange}
           style={inputStyle}
+          disabled={isSubmitting}
         />
 
         <input
@@ -80,6 +85,7 @@ function ProductForm({
           value={formData.price}
           onChange={onChange}
           style={inputStyle}
+          disabled={isSubmitting}
         />
 
         <input
@@ -90,6 +96,7 @@ function ProductForm({
           onChange={onChange}
           min="0"
           style={inputStyle}
+          disabled={isSubmitting}
         />
 
         <select
@@ -97,6 +104,7 @@ function ProductForm({
           value={formData.stock}
           onChange={onChange}
           style={inputStyle}
+          disabled={isSubmitting}
         >
           {stockOptions.map((stock) => (
             <option key={stock} value={stock}>
@@ -113,6 +121,7 @@ function ProductForm({
             value={formData.image}
             onChange={onChange}
             style={inputStyle}
+            disabled={isSubmitting}
           />
 
           <p style={helperTextStyle}>
@@ -122,12 +131,21 @@ function ProductForm({
         </div>
       </div>
 
-      <button type="submit" style={submitButtonStyle}>
-        {editingProductId ? "Salvar alterações" : "Adicionar produto"}
+      <button type="submit" style={submitButtonStyle} disabled={isSubmitting}>
+        {isSubmitting
+          ? "Salvando..."
+          : editingProductId
+          ? "Salvar alterações"
+          : "Adicionar produto"}
       </button>
 
       {editingProductId && (
-        <button type="button" onClick={onCancelEdit} style={cancelButtonStyle}>
+        <button
+          type="button"
+          onClick={onCancelEdit}
+          style={cancelButtonStyle}
+          disabled={isSubmitting}
+        >
           Cancelar edição
         </button>
       )}

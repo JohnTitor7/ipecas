@@ -24,6 +24,8 @@ import {
   updateProduct,
 } from "./services/productService";
 
+const ADMIN_EMAILS = ["ryanv5944@gmail.com"];
+
 function App() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
@@ -83,8 +85,7 @@ function App() {
     const productToDelete = products.find((product) => product.id === productId);
 
     if (!productToDelete?.firestoreId) {
-      alert("Não foi possível remover este produto.");
-      return;
+      throw new Error("Não foi possível encontrar este produto no banco.");
     }
 
     await deleteProduct(productToDelete.firestoreId);
@@ -96,8 +97,7 @@ function App() {
     );
 
     if (!currentProduct?.firestoreId) {
-      alert("Não foi possível atualizar este produto.");
-      return;
+      throw new Error("Não foi possível encontrar este produto no banco.");
     }
 
     await updateProduct({
@@ -108,14 +108,6 @@ function App() {
   }
 
   async function handleResetProducts() {
-    const confirmReset = window.confirm(
-      "Tem certeza que deseja restaurar os produtos iniciais?"
-    );
-
-    if (!confirmReset) {
-      return;
-    }
-
     await resetProducts(initialProducts);
   }
 
@@ -204,6 +196,7 @@ function App() {
               isAuthLoading={isAuthLoading}
               isProductsLoading={isProductsLoading}
               currentUser={currentUser}
+              adminEmails={ADMIN_EMAILS}
               onLogout={handleLogout}
               products={products}
               onAddProduct={handleAddProduct}
@@ -223,6 +216,7 @@ function AdminRoute({
   isAuthLoading,
   isProductsLoading,
   currentUser,
+  adminEmails,
   onLogout,
   products,
   onAddProduct,
@@ -236,6 +230,35 @@ function AdminRoute({
 
   if (!currentUser) {
     return <Login onLoginSuccess={() => {}} />;
+  }
+
+  const isAuthorizedAdmin = adminEmails.includes(currentUser.email);
+
+  if (!isAuthorizedAdmin) {
+    return (
+      <>
+        <AdminHeader logo={logo} onLogout={onLogout} />
+
+        <section style={unauthorizedPageStyle}>
+          <div style={unauthorizedCardStyle}>
+            <p style={unauthorizedLabelStyle}>Acesso negado</p>
+
+            <h2 style={unauthorizedTitleStyle}>Usuário não autorizado</h2>
+
+            <p style={unauthorizedTextStyle}>
+              O e-mail logado não tem permissão para acessar o painel
+              administrativo.
+            </p>
+
+            <p style={unauthorizedEmailStyle}>{currentUser.email}</p>
+
+            <button type="button" onClick={onLogout} style={logoutButtonStyle}>
+              Sair desta conta
+            </button>
+          </div>
+        </section>
+      </>
+    );
   }
 
   return (
@@ -268,5 +291,54 @@ function LoadingMessage({ text }) {
     </section>
   );
 }
+
+const unauthorizedPageStyle = {
+  maxWidth: "900px",
+  margin: "0 auto",
+  padding: "60px 32px",
+};
+
+const unauthorizedCardStyle = {
+  backgroundColor: "#111",
+  border: "1px solid #2a2a2a",
+  borderRadius: "18px",
+  padding: "34px",
+  textAlign: "center",
+};
+
+const unauthorizedLabelStyle = {
+  color: "#dc2626",
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  letterSpacing: "1px",
+  margin: "0 0 10px",
+};
+
+const unauthorizedTitleStyle = {
+  color: "white",
+  margin: "0 0 10px",
+  fontSize: "28px",
+};
+
+const unauthorizedTextStyle = {
+  color: "#aaa",
+  margin: "0 0 14px",
+};
+
+const unauthorizedEmailStyle = {
+  color: "#f87171",
+  fontWeight: "bold",
+  marginBottom: "24px",
+};
+
+const logoutButtonStyle = {
+  backgroundColor: "#dc2626",
+  color: "white",
+  border: "none",
+  padding: "12px 16px",
+  borderRadius: "10px",
+  cursor: "pointer",
+  fontWeight: "bold",
+};
 
 export default App;
