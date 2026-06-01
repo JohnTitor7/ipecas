@@ -1,8 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
 import ProductForm from "./ProductForm";
 import AdminProductList from "./AdminProductList";
+
+const initialFormData = {
+  name: "",
+  category: "",
+  brand: "",
+  model: "",
+  price: "",
+  stock: "Disponível",
+  image: "",
+};
 
 function AdminPanel({
   products,
@@ -11,31 +20,8 @@ function AdminPanel({
   onUpdateProduct,
   onResetProducts,
 }) {
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    brand: "",
-    model: "",
-    price: "",
-    stock: "Disponível",
-    image: "",
-  });
-
+  const [formData, setFormData] = useState(initialFormData);
   const [editingProductId, setEditingProductId] = useState(null);
-
-  function resetForm() {
-    setFormData({
-      name: "",
-      category: "",
-      brand: "",
-      model: "",
-      price: "",
-      stock: "Disponível",
-      image: "",
-    });
-
-    setEditingProductId(null);
-  }
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -50,17 +36,27 @@ function AdminPanel({
     event.preventDefault();
 
     if (!formData.name || !formData.category || !formData.price) {
-  alert("Preencha pelo menos nome, categoria e preço do produto.");
-  return;
-}
+      alert("Preencha pelo menos nome, categoria e preço do produto.");
+      return;
+    }
+
+    const productData = {
+      name: formData.name.trim(),
+      category: formData.category,
+      brand: formData.brand.trim(),
+      model: formData.model.trim(),
+      price: formData.price.trim(),
+      stock: formData.stock,
+      image: formData.image.trim(),
+    };
 
     if (editingProductId) {
       onUpdateProduct({
         id: editingProductId,
-        ...formData,
+        ...productData,
       });
     } else {
-      onAddProduct(formData);
+      onAddProduct(productData);
     }
 
     resetForm();
@@ -70,63 +66,111 @@ function AdminPanel({
     setEditingProductId(product.id);
 
     setFormData({
-      name: product.name,
-      category: product.category,
-      brand: product.brand,
-      model: product.model,
-      price: product.price,
-      stock: product.stock,
-      image: product.image,
+      name: product.name || "",
+      category: product.category || "",
+      brand: product.brand || "",
+      model: product.model || "",
+      price: product.price || "",
+      stock: product.stock || "Disponível",
+      image: product.image || "",
+    });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
   }
 
+  function handleCancelEdit() {
+    resetForm();
+  }
+
+  function resetForm() {
+    setFormData(initialFormData);
+    setEditingProductId(null);
+  }
+
   return (
-    <section
-      style={{
-        padding: "40px",
-        maxWidth: "900px",
-        margin: "0 auto",
-      }}
-    >
-      <Link
-        to="/"
-        style={{
-          display: "inline-block",
-          marginBottom: "25px",
-          color: "#aaa",
-          textDecoration: "none",
-          border: "1px solid #333",
-          padding: "10px 14px",
-          borderRadius: "10px",
-        }}
-      >
-        ← Voltar para o site
-      </Link>
+    <main style={pageStyle}>
+      <section style={headerStyle}>
+        <div>
+          <p style={labelStyle}>Painel administrativo</p>
 
-      <h2 style={{ fontSize: "32px", marginBottom: "10px" }}>
-        Painel administrativo
-      </h2>
+          <h2 style={titleStyle}>
+            {editingProductId ? "Editar produto" : "Cadastrar produto"}
+          </h2>
 
-      <p style={{ color: "#aaa", marginBottom: "30px" }}>
-        Área para cadastrar, editar, visualizar e remover produtos da loja.
-      </p>
+          <p style={descriptionStyle}>
+            Área para cadastrar, editar, visualizar e remover produtos da loja.
+          </p>
+        </div>
+
+        <button type="button" onClick={onResetProducts} style={resetButtonStyle}>
+          Restaurar produtos iniciais
+        </button>
+      </section>
 
       <ProductForm
         formData={formData}
         editingProductId={editingProductId}
         onChange={handleChange}
         onSubmit={handleSubmit}
-        onCancelEdit={resetForm}
+        onCancelEdit={handleCancelEdit}
       />
 
       <AdminProductList
         products={products}
         onEditProduct={handleEditProduct}
         onDeleteProduct={onDeleteProduct}
-        onResetProducts={onResetProducts}
       />
-    </section>
+    </main>
   );
 }
+
+const pageStyle = {
+  maxWidth: "1100px",
+  margin: "0 auto",
+  padding: "40px 32px 60px",
+};
+
+const headerStyle = {
+  display: "flex",
+  alignItems: "flex-end",
+  justifyContent: "space-between",
+  gap: "24px",
+  marginBottom: "30px",
+  flexWrap: "wrap",
+};
+
+const labelStyle = {
+  color: "#dc2626",
+  fontWeight: "bold",
+  textTransform: "uppercase",
+  letterSpacing: "1px",
+  margin: "0 0 8px",
+  fontSize: "13px",
+};
+
+const titleStyle = {
+  color: "white",
+  fontSize: "34px",
+  margin: 0,
+};
+
+const descriptionStyle = {
+  color: "#aaa",
+  marginTop: "10px",
+  marginBottom: 0,
+};
+
+const resetButtonStyle = {
+  backgroundColor: "transparent",
+  color: "#f87171",
+  border: "1px solid #7f1d1d",
+  padding: "12px 16px",
+  borderRadius: "10px",
+  cursor: "pointer",
+  fontWeight: "bold",
+};
 
 export default AdminPanel;

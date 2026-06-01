@@ -11,6 +11,7 @@ import Catalog from "./components/Catalog";
 import AdminPanel from "./components/AdminPanel";
 import CategoryPage from "./components/CategoryPage";
 import Login from "./components/Login";
+import AdminHeader from "./components/AdminHeader";
 
 import { auth } from "./services/firebase";
 
@@ -43,27 +44,23 @@ function App() {
   }, []);
 
   useEffect(() => {
+    let unsubscribeProducts;
+
     async function initializeProducts() {
       try {
         await seedProductsIfEmpty(initialProducts);
 
-        const unsubscribe = listenToProducts((firebaseProducts) => {
+        unsubscribeProducts = listenToProducts((firebaseProducts) => {
           setProducts(firebaseProducts);
           setIsProductsLoading(false);
         });
-
-        return unsubscribe;
       } catch (error) {
         console.error("Erro ao carregar produtos:", error);
         setIsProductsLoading(false);
       }
     }
 
-    let unsubscribeProducts;
-
-    initializeProducts().then((unsubscribe) => {
-      unsubscribeProducts = unsubscribe;
-    });
+    initializeProducts();
 
     return () => {
       if (unsubscribeProducts) {
@@ -166,34 +163,36 @@ function App() {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      <Header
-        logo={logo}
-        search={search}
-        onSearchChange={(event) => setSearch(event.target.value)}
-        selectedCategory={selectedCategory}
-        onSelectCategory={handleSelectCategory}
-        onClearCategory={handleClearCategory}
-      />
-
       <Routes>
         <Route
           path="/"
           element={
-            isProductsLoading ? (
-              <LoadingMessage text="Carregando produtos..." />
-            ) : isHomePage ? (
-              <>
-                <Hero onSelectCategory={handleSelectCategory} />
-
-                <Catalog products={searchedProducts} />
-              </>
-            ) : (
-              <CategoryPage
-                category={selectedCategory}
-                products={searchedProducts}
+            <>
+              <Header
+                logo={logo}
+                search={search}
+                onSearchChange={(event) => setSearch(event.target.value)}
+                selectedCategory={selectedCategory}
+                onSelectCategory={handleSelectCategory}
                 onClearCategory={handleClearCategory}
               />
-            )
+
+              {isProductsLoading ? (
+                <LoadingMessage text="Carregando produtos..." />
+              ) : isHomePage ? (
+                <>
+                  <Hero onSelectCategory={handleSelectCategory} />
+
+                  <Catalog products={searchedProducts} />
+                </>
+              ) : (
+                <CategoryPage
+                  category={selectedCategory}
+                  products={searchedProducts}
+                  onClearCategory={handleClearCategory}
+                />
+              )}
+            </>
           }
         />
 
@@ -201,6 +200,7 @@ function App() {
           path="/admin"
           element={
             <AdminRoute
+              logo={logo}
               isAuthLoading={isAuthLoading}
               isProductsLoading={isProductsLoading}
               currentUser={currentUser}
@@ -219,6 +219,7 @@ function App() {
 }
 
 function AdminRoute({
+  logo,
   isAuthLoading,
   isProductsLoading,
   currentUser,
@@ -239,31 +240,7 @@ function AdminRoute({
 
   return (
     <>
-      <div
-        style={{
-          maxWidth: "900px",
-          margin: "0 auto",
-          padding: "30px 40px 0",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
-        <button
-          type="button"
-          onClick={onLogout}
-          style={{
-            backgroundColor: "transparent",
-            color: "#aaa",
-            border: "1px solid #333",
-            padding: "10px 14px",
-            borderRadius: "10px",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
-        >
-          Sair do painel
-        </button>
-      </div>
+      <AdminHeader logo={logo} onLogout={onLogout} />
 
       <AdminPanel
         products={products}
