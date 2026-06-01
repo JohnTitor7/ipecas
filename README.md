@@ -2,7 +2,7 @@
 
 Site desenvolvido para consulta de peças de reposição para celulares, com foco em visualização de produtos, preços, disponibilidade e contato rápido via WhatsApp.
 
-O projeto foi criado para uma loja de peças de celular, funcionando como uma vitrine digital. A proposta é permitir que clientes consultem os produtos disponíveis sem carrinho de compras e sem checkout, entrando em contato diretamente com a loja para confirmar informações.
+O projeto foi criado para uma loja de peças de celular, funcionando como uma vitrine digital. A proposta é permitir que clientes consultem produtos disponíveis sem carrinho de compras e sem checkout, entrando em contato diretamente com a loja para confirmar informações.
 
 ## Deploy
 
@@ -20,7 +20,7 @@ https://github.com/JohnTitor7/ipecas
 
 O objetivo do i Peças é oferecer uma vitrine digital para consulta de peças e acessórios de celular.
 
-A aplicação permite visualizar produtos, consultar preços, verificar disponibilidade e iniciar contato pelo WhatsApp. O foco não é venda direta pelo site, mas sim consulta rápida e atendimento personalizado.
+A aplicação permite visualizar produtos, consultar preços, verificar disponibilidade e iniciar contato pelo WhatsApp. O foco não é venda direta pelo site, mas sim consulta rápida, organização de catálogo e atendimento personalizado.
 
 ## Funcionalidades
 
@@ -33,13 +33,18 @@ A aplicação permite visualizar produtos, consultar preços, verificar disponib
 * Botão de consulta via WhatsApp
 * Layout responsivo para desktop e celular
 * Menu lateral de categorias no mobile
-* Página administrativa em `/admin`
+* Página administrativa protegida em `/admin`
+* Login administrativo com Firebase Authentication
 * Cadastro de produtos
 * Edição de produtos
 * Remoção de produtos
-* Restauração dos produtos iniciais
-* Persistência temporária com LocalStorage
-* Início da integração com Firebase para futuro back-end real
+* Controle de quantidade em estoque
+* Organização dos produtos por categoria e marca no painel administrativo
+* Feedback de sucesso e erro no painel administrativo
+* Loading em ações administrativas
+* Produtos salvos online no Cloud Firestore
+* Regras de segurança no Firestore permitindo escrita apenas para administrador autorizado
+* Deploy na Vercel
 
 ## Tecnologias utilizadas
 
@@ -49,11 +54,11 @@ A aplicação permite visualizar produtos, consultar preços, verificar disponib
 * CSS
 * React Router DOM
 * Lucide React
-* LocalStorage
 * Firebase
-* Firestore
 * Firebase Authentication
+* Cloud Firestore
 * Vercel
+* Git e GitHub
 
 ## Estrutura do projeto
 
@@ -65,6 +70,7 @@ src/
 │   ├── hero.png
 │   └── logo-ipecas.png
 ├── components/
+│   ├── AdminHeader.jsx
 │   ├── AdminPanel.jsx
 │   ├── AdminProductList.jsx
 │   ├── Catalog.jsx
@@ -75,6 +81,7 @@ src/
 │   ├── Header.jsx
 │   ├── Hero.css
 │   ├── Hero.jsx
+│   ├── Login.jsx
 │   ├── ProductCard.jsx
 │   └── ProductForm.jsx
 ├── data/
@@ -92,7 +99,7 @@ src/
 
 ### Header
 
-Componente responsável pelo topo do site, contendo:
+Componente responsável pelo topo do site público, contendo:
 
 * Logo da loja
 * Campo de busca
@@ -131,6 +138,14 @@ Componente responsável pela exibição individual de cada produto, contendo:
 * Estoque
 * Botão de consulta via WhatsApp
 
+### Login
+
+Componente responsável pela autenticação do painel administrativo usando Firebase Authentication.
+
+### AdminHeader
+
+Componente responsável pelo topo do painel administrativo, separado do cabeçalho público do site.
+
 ### AdminPanel
 
 Componente responsável pelo painel administrativo, permitindo:
@@ -139,24 +154,64 @@ Componente responsável pelo painel administrativo, permitindo:
 * Editar produtos
 * Remover produtos
 * Restaurar produtos iniciais
+* Controlar quantidade em estoque
+* Exibir mensagens de sucesso e erro
+
+### AdminProductList
+
+Componente responsável por listar os produtos cadastrados no painel administrativo, organizando os itens por categoria e marca.
 
 ## Back-end
 
-O projeto iniciou a integração com Firebase para substituir futuramente o uso de LocalStorage.
+O projeto utiliza Firebase como back-end, com autenticação e banco de dados online.
 
-A estrutura atual já possui arquivos de serviço para conexão com:
+### Firebase Authentication
 
-* Firebase Authentication
-* Cloud Firestore
+A área administrativa em `/admin` é protegida por login com e-mail e senha.
 
-Arquivos relacionados:
+Além disso, o acesso administrativo é validado por e-mail autorizado dentro da aplicação.
 
-```txt
-src/services/firebase.js
-src/services/productService.js
+### Cloud Firestore
+
+Os produtos são armazenados no Cloud Firestore, permitindo que alterações feitas no painel administrativo sejam refletidas no site público.
+
+O sistema permite:
+
+* Criar produtos
+* Editar produtos
+* Remover produtos
+* Restaurar produtos iniciais
+* Controlar quantidade em estoque
+* Atualizar o catálogo em tempo real
+
+### Regras de segurança
+
+As regras do Firestore foram configuradas para permitir:
+
+* Leitura pública dos produtos
+* Escrita apenas para administrador autenticado e autorizado
+
+Exemplo de regra utilizada:
+
+```js
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email in [
+          "ryanv5944@gmail.com"
+        ];
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+  }
+}
 ```
-
-A próxima etapa será proteger o painel administrativo com login e salvar os produtos diretamente no Firestore.
 
 ## Como executar localmente
 
@@ -196,39 +251,70 @@ Painel administrativo:
 http://localhost:5173/admin
 ```
 
-## Observação sobre os produtos
+## Configuração do Firebase
 
-A versão atual ainda utiliza LocalStorage para armazenar alterações feitas pelo painel administrativo.
+Para utilizar o projeto com Firebase, é necessário criar um projeto no Firebase e configurar:
 
-Caso os produtos exibidos não atualizem após alterações no arquivo `products.js`, limpe o armazenamento local do navegador executando no console:
+* Firebase Authentication com e-mail/senha
+* Cloud Firestore
+* Regras de segurança do Firestore
+* Arquivo de configuração Firebase em `src/services/firebase.js`
+
+Exemplo de estrutura do arquivo:
 
 ```js
-localStorage.removeItem("ipecas-products");
-location.reload();
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_AUTH_DOMAIN",
+  projectId: "SEU_PROJECT_ID",
+  storageBucket: "SEU_STORAGE_BUCKET",
+  messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+  appId: "SEU_APP_ID",
+};
+
+const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 ```
 
-Ou utilize a opção de restaurar produtos iniciais dentro do painel administrativo.
+## Observação sobre imagens
+
+No momento, alguns produtos possuem imagem cadastrada e outros ainda estão sem imagem.
+
+Os produtos sem imagem são exibidos normalmente, permitindo que as imagens sejam adicionadas futuramente conforme forem encontradas ou produzidas.
 
 ## Status do projeto
 
-Projeto em desenvolvimento.
+Projeto em desenvolvimento, com front-end e back-end Firebase funcionais.
 
-A aplicação já possui layout responsivo, catálogo, listagem por categoria, filtros e painel administrativo funcional com armazenamento temporário.
+A aplicação já possui:
 
-A próxima etapa será finalizar a integração com Firebase para transformar o painel administrativo em uma área com login e banco de dados online.
+* Site público responsivo
+* Catálogo de produtos
+* Listagem por categoria
+* Filtros
+* Painel administrativo protegido
+* Login com Firebase
+* Produtos salvos no Firestore
+* Controle de estoque por quantidade
+* Regras de segurança no banco
+* Deploy online na Vercel
 
 ## Próximos passos
 
-* Criar tela de login para o painel administrativo
-* Proteger a rota `/admin`
-* Substituir LocalStorage por Firestore
-* Salvar produtos no Firebase
-* Melhorar regras de segurança do Firebase
-* Adicionar upload real de imagens
-* Padronizar imagens dos produtos
-* Melhorar filtros e navegação por categoria
+* Adicionar upload real de imagens com Firebase Storage
+* Melhorar padronização visual das imagens dos produtos
 * Criar domínio personalizado
-* Refinar responsividade em diferentes tamanhos de tela
+* Refinar responsividade em mais tamanhos de tela
+* Melhorar filtros e ordenação dos produtos
+* Adicionar busca avançada no painel administrativo
+* Criar histórico de alterações no painel
+* Adicionar confirmação visual mais avançada para ações administrativas
 
 ## Autor
 
