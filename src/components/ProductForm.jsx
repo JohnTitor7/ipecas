@@ -14,6 +14,11 @@ function ProductForm({
     "Cabos",
     "Áudio",
     "Acessórios",
+    "Componentes",
+    "Ferramentas",
+    "Câmeras",
+    "Carcaças",
+    "Outros",
   ];
 
   const stockOptions = [
@@ -77,6 +82,16 @@ function ProductForm({
           style={inputStyle}
         />
 
+        <input
+          type="number"
+          name="quantity"
+          placeholder="Quantidade em estoque"
+          value={formData.quantity}
+          onChange={onChange}
+          min="0"
+          style={inputStyle}
+        />
+
         <select
           name="stock"
           value={formData.stock}
@@ -101,8 +116,8 @@ function ProductForm({
           />
 
           <p style={helperTextStyle}>
-            Cole aqui o link de uma imagem do produto. No futuro, esse campo
-            será substituído por upload direto de imagem.
+            Cole aqui o link de uma imagem do produto. Se deixar vazio, o card
+            mostrará que a imagem ainda não foi cadastrada.
           </p>
         </div>
       </div>
@@ -133,10 +148,12 @@ const fieldsGridStyle = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
   gap: "18px",
+  alignItems: "start",
 };
 
 const inputStyle = {
   width: "100%",
+  height: "52px",
   padding: "15px",
   borderRadius: "12px",
   border: "1px solid #333",
@@ -151,6 +168,7 @@ const helperTextStyle = {
   color: "#777",
   fontSize: "13px",
   marginTop: "8px",
+  lineHeight: "1.35",
 };
 
 const submitButtonStyle = {

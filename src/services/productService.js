@@ -1,5 +1,4 @@
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -32,24 +31,18 @@ export function listenToProducts(onProductsChange) {
 }
 
 export async function addProduct(product) {
-  await addDoc(collection(db, PRODUCTS_COLLECTION), product);
+  const normalizedProduct = normalizeProduct(product);
+  const productRef = doc(db, PRODUCTS_COLLECTION, normalizedProduct.slug);
+
+  await setDoc(productRef, normalizedProduct, { merge: true });
 }
 
 export async function updateProduct(product) {
-  const productRef = doc(db, PRODUCTS_COLLECTION, product.firestoreId);
+  const normalizedProduct = normalizeProduct(product);
+  const firestoreId = product.firestoreId || normalizedProduct.slug;
+  const productRef = doc(db, PRODUCTS_COLLECTION, firestoreId);
 
-  const productToUpdate = {
-    id: product.id,
-    name: product.name,
-    category: product.category,
-    brand: product.brand,
-    model: product.model,
-    price: product.price,
-    stock: product.stock,
-    image: product.image || "",
-  };
-
-  await updateDoc(productRef, productToUpdate);
+  await updateDoc(productRef, normalizedProduct);
 }
 
 export async function deleteProduct(firestoreId) {
@@ -64,12 +57,10 @@ export async function seedProductsIfEmpty(initialProducts) {
   }
 
   const createProducts = initialProducts.map((product) => {
-    const productRef = doc(collection(db, PRODUCTS_COLLECTION));
+    const normalizedProduct = normalizeProduct(product);
+    const productRef = doc(db, PRODUCTS_COLLECTION, normalizedProduct.slug);
 
-    return setDoc(productRef, {
-      ...product,
-      image: product.image || "",
-    });
+    return setDoc(productRef, normalizedProduct);
   });
 
   await Promise.all(createProducts);
@@ -85,13 +76,39 @@ export async function resetProducts(initialProducts) {
   await Promise.all(deleteProducts);
 
   const createProducts = initialProducts.map((product) => {
-    const productRef = doc(collection(db, PRODUCTS_COLLECTION));
+    const normalizedProduct = normalizeProduct(product);
+    const productRef = doc(db, PRODUCTS_COLLECTION, normalizedProduct.slug);
 
-    return setDoc(productRef, {
-      ...product,
-      image: product.image || "",
-    });
+    return setDoc(productRef, normalizedProduct);
   });
 
   await Promise.all(createProducts);
+}
+
+function normalizeProduct(product) {
+  const normalizedProduct = {
+    id: product.id,
+    name: product.name || "",
+    category: product.category || "",
+    brand: product.brand || "",
+    model: product.model || "",
+    price: product.price || "",
+    quantity: Number(product.quantity) || 0,
+    stock: product.stock || "Disponível",
+    image: product.image || "",
+  };
+
+  return {
+    ...normalizedProduct,
+    slug: createProductSlug(normalizedProduct),
+  };
+}
+
+function createProductSlug(product) {
+  return `${product.category}-${product.brand}-${product.model}-${product.name}`
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }

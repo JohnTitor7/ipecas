@@ -9,6 +9,7 @@ const initialFormData = {
   brand: "",
   model: "",
   price: "",
+  quantity: "",
   stock: "Disponível",
   image: "",
 };
@@ -46,6 +47,7 @@ function AdminPanel({
       brand: formData.brand.trim(),
       model: formData.model.trim(),
       price: formData.price.trim(),
+      quantity: normalizeQuantity(formData.quantity),
       stock: formData.stock,
       image: formData.image.trim(),
     };
@@ -71,6 +73,7 @@ function AdminPanel({
       brand: product.brand || "",
       model: product.model || "",
       price: product.price || "",
+      quantity: String(product.quantity ?? ""),
       stock: product.stock || "Disponível",
       image: product.image || "",
     });
@@ -125,6 +128,16 @@ function AdminPanel({
       />
     </main>
   );
+}
+
+function normalizeQuantity(quantity) {
+  const numericQuantity = Number(quantity);
+
+  if (Number.isNaN(numericQuantity) || numericQuantity < 0) {
+    return 0;
+  }
+
+  return numericQuantity;
 }
 
 const pageStyle = {

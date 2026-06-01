@@ -23,7 +23,8 @@ function AdminProductList({ products, onEditProduct, onDeleteProduct }) {
         </div>
 
         <span style={counterStyle}>
-          {products.length} produto{products.length !== 1 ? "s" : ""}
+          {products.length} produto{products.length !== 1 ? "s" : ""} único
+          {products.length !== 1 ? "s" : ""}
         </span>
       </div>
 
@@ -36,7 +37,7 @@ function AdminProductList({ products, onEditProduct, onDeleteProduct }) {
               <h4 style={categoryTitleStyle}>{category}</h4>
 
               <span style={categoryCounterStyle}>
-                {categoryTotal} item{categoryTotal !== 1 ? "s" : ""}
+                {categoryTotal} produto{categoryTotal !== 1 ? "s" : ""}
               </span>
             </div>
 
@@ -64,6 +65,11 @@ function AdminProductList({ products, onEditProduct, onDeleteProduct }) {
                         </span>
 
                         <span style={productPriceStyle}>{product.price}</span>
+
+                        <span style={quantityStyle}>
+                          Quantidade: {product.quantity ?? 0} peça
+                          {(product.quantity ?? 0) !== 1 ? "s" : ""}
+                        </span>
 
                         <span
                           style={{
@@ -333,6 +339,12 @@ const productPriceStyle = {
   color: "white",
   fontWeight: "bold",
   fontSize: "17px",
+};
+
+const quantityStyle = {
+  color: "#ddd",
+  fontSize: "13px",
+  fontWeight: "bold",
 };
 
 const stockStyle = {
