@@ -1,134 +1,160 @@
 import { useMemo, useState } from "react";
+
 import ProductCard from "./ProductCard";
+
 import "./CategoryPage.css";
 
+const BRAND_FILTER_ALL = "Todas";
+const STOCK_FILTER_ALL = "Todos";
+const PRICE_FILTER_ALL = "Todas";
+
+const stockOptions = [
+  STOCK_FILTER_ALL,
+  "Disponível",
+  "Últimas unidades",
+  "Sob consulta",
+  "Indisponível",
+];
+
+const priceOptions = [
+  {
+    label: PRICE_FILTER_ALL,
+    min: 0,
+    max: Infinity,
+  },
+  {
+    label: "Até R$ 100",
+    min: 0,
+    max: 100,
+  },
+  {
+    label: "R$ 100 a R$ 200",
+    min: 100,
+    max: 200,
+  },
+  {
+    label: "R$ 200 a R$ 300",
+    min: 200,
+    max: 300,
+  },
+  {
+    label: "R$ 300 a R$ 500",
+    min: 300,
+    max: 500,
+  },
+  {
+    label: "Acima de R$ 500",
+    min: 500,
+    max: Infinity,
+  },
+];
+
 function CategoryPage({ category, products, onClearCategory }) {
-  const [selectedBrand, setSelectedBrand] = useState("Todas");
-  const [selectedStock, setSelectedStock] = useState("Todos");
-  const [selectedPriceRange, setSelectedPriceRange] = useState("Todas");
+  const [selectedBrand, setSelectedBrand] = useState(BRAND_FILTER_ALL);
+  const [selectedStock, setSelectedStock] = useState(STOCK_FILTER_ALL);
+  const [selectedPrice, setSelectedPrice] = useState(PRICE_FILTER_ALL);
 
-  const categoryProducts = products.filter(
-    (product) => product.category === category
-  );
+  const categoryProducts = useMemo(() => {
+    return products.filter((product) => product.category === category);
+  }, [products, category]);
 
-  const brands = useMemo(() => {
-    const uniqueBrands = categoryProducts.map((product) => product.brand);
-    return ["Todas", ...new Set(uniqueBrands)];
+  const brandOptions = useMemo(() => {
+    const brands = categoryProducts
+      .map((product) => product.brand)
+      .filter(Boolean);
+
+    return [BRAND_FILTER_ALL, ...new Set(brands)];
   }, [categoryProducts]);
 
-  const filteredProducts = categoryProducts.filter((product) => {
-    const matchesBrand =
-      selectedBrand === "Todas" || product.brand === selectedBrand;
+  const filteredProducts = useMemo(() => {
+    return categoryProducts.filter((product) => {
+      const matchesBrand =
+        selectedBrand === BRAND_FILTER_ALL || product.brand === selectedBrand;
 
-    const matchesStock =
-      selectedStock === "Todos" || product.stock === selectedStock;
+      const matchesStock =
+        selectedStock === STOCK_FILTER_ALL || product.stock === selectedStock;
 
-    const matchesPriceRange = checkPriceRange(product.price, selectedPriceRange);
+      const selectedPriceRange = priceOptions.find(
+        (option) => option.label === selectedPrice
+      );
 
-    return matchesBrand && matchesStock && matchesPriceRange;
-  });
+      const productPrice = convertPriceToNumber(product.price);
+
+      const matchesPrice =
+        !selectedPriceRange ||
+        selectedPriceRange.label === PRICE_FILTER_ALL ||
+        (productPrice >= selectedPriceRange.min &&
+          productPrice <= selectedPriceRange.max);
+
+      return matchesBrand && matchesStock && matchesPrice;
+    });
+  }, [categoryProducts, selectedBrand, selectedStock, selectedPrice]);
+
+  function handleClearFilters() {
+    setSelectedBrand(BRAND_FILTER_ALL);
+    setSelectedStock(STOCK_FILTER_ALL);
+    setSelectedPrice(PRICE_FILTER_ALL);
+  }
 
   return (
-    <section className="category-page">
-      <div className="category-header">
+    <main className="category-page">
+      <button
+        type="button"
+        className="category-back-button"
+        onClick={onClearCategory}
+      >
+        ← Voltar para o início
+      </button>
+
+      <section className="category-page-top">
         <div>
-          <button
-            type="button"
-            className="category-back-button"
-            onClick={onClearCategory}
-          >
-            ← Voltar para o início
-          </button>
+          <p className="category-page-label">Categoria</p>
 
-          <p className="category-label">Categoria</p>
+          <h1 className="category-page-title">{category}</h1>
 
-          <h2 className="category-title">{category}</h2>
-
-          <p className="category-description">
+          <p className="category-page-description">
             Consulte os produtos disponíveis, filtre por marca, estoque e faixa
             de preço.
           </p>
         </div>
 
-        <p className="category-counter">
+        <span className="category-page-count">
           {filteredProducts.length} produto
           {filteredProducts.length !== 1 ? "s" : ""} encontrado
           {filteredProducts.length !== 1 ? "s" : ""}
-        </p>
-      </div>
+        </span>
+      </section>
 
-      <div className="category-layout">
+      <section className="category-page-layout">
         <aside className="category-filters">
-          <div className="filter-block">
-            <h3>Filtrar por marca</h3>
+          <FilterGroup
+            title="Filtrar por marca"
+            options={brandOptions}
+            selectedOption={selectedBrand}
+            onSelectOption={setSelectedBrand}
+          />
 
-            <div className="filter-options">
-              {brands.map((brand) => (
-                <button
-                  key={brand}
-                  type="button"
-                  className={
-                    selectedBrand === brand
-                      ? "filter-option active"
-                      : "filter-option"
-                  }
-                  onClick={() => setSelectedBrand(brand)}
-                >
-                  {brand}
-                </button>
-              ))}
-            </div>
-          </div>
+          <FilterGroup
+            title="Filtrar por estoque"
+            options={stockOptions}
+            selectedOption={selectedStock}
+            onSelectOption={setSelectedStock}
+          />
 
-          <div className="filter-block">
-            <h3>Filtrar por estoque</h3>
+          <FilterGroup
+            title="Faixa de preço"
+            options={priceOptions.map((option) => option.label)}
+            selectedOption={selectedPrice}
+            onSelectOption={setSelectedPrice}
+          />
 
-            <div className="filter-options">
-              {["Todos", "Disponível", "Últimas unidades", "Sob consulta"].map(
-                (stock) => (
-                  <button
-                    key={stock}
-                    type="button"
-                    className={
-                      selectedStock === stock
-                        ? "filter-option active"
-                        : "filter-option"
-                    }
-                    onClick={() => setSelectedStock(stock)}
-                  >
-                    {stock}
-                  </button>
-                )
-              )}
-            </div>
-          </div>
-
-          <div className="filter-block">
-            <h3>Faixa de preço</h3>
-
-            <div className="filter-options">
-              {[
-                "Todas",
-                "Até R$ 100",
-                "R$ 100 a R$ 200",
-                "R$ 200 a R$ 300",
-                "Acima de R$ 300",
-              ].map((range) => (
-                <button
-                  key={range}
-                  type="button"
-                  className={
-                    selectedPriceRange === range
-                      ? "filter-option active"
-                      : "filter-option"
-                  }
-                  onClick={() => setSelectedPriceRange(range)}
-                >
-                  {range}
-                </button>
-              ))}
-            </div>
-          </div>
+          <button
+            type="button"
+            className="category-clear-filters-button"
+            onClick={handleClearFilters}
+          >
+            Limpar filtros
+          </button>
         </aside>
 
         <div className="category-products-area">
@@ -139,50 +165,61 @@ function CategoryPage({ category, products, onClearCategory }) {
               ))}
             </div>
           ) : (
-            <div className="category-empty">
-              <h3>Nenhum produto encontrado</h3>
+            <div className="category-empty-state">
+              <h2>Nenhum produto encontrado</h2>
 
               <p>
-                Não encontramos produtos com os filtros selecionados. Tente
-                remover algum filtro.
+                Tente remover algum filtro ou escolher outra marca, estoque ou
+                faixa de preço.
               </p>
+
+              <button
+                type="button"
+                className="category-empty-button"
+                onClick={handleClearFilters}
+              >
+                Limpar filtros
+              </button>
             </div>
           )}
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 }
 
-function checkPriceRange(priceText, selectedPriceRange) {
-  if (selectedPriceRange === "Todas") {
-    return true;
-  }
+function FilterGroup({ title, options, selectedOption, onSelectOption }) {
+  return (
+    <div className="filter-group">
+      <h3 className="filter-title">{title}</h3>
 
-  const price = parsePrice(priceText);
-
-  if (selectedPriceRange === "Até R$ 100") {
-    return price <= 100;
-  }
-
-  if (selectedPriceRange === "R$ 100 a R$ 200") {
-    return price > 100 && price <= 200;
-  }
-
-  if (selectedPriceRange === "R$ 200 a R$ 300") {
-    return price > 200 && price <= 300;
-  }
-
-  if (selectedPriceRange === "Acima de R$ 300") {
-    return price > 300;
-  }
-
-  return true;
+      <div className="filter-options">
+        {options.map((option) => (
+          <button
+            key={option}
+            type="button"
+            className={
+              selectedOption === option
+                ? "filter-option active"
+                : "filter-option"
+            }
+            onClick={() => onSelectOption(option)}
+          >
+            {option}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-function parsePrice(priceText) {
+function convertPriceToNumber(price) {
+  if (!price) {
+    return 0;
+  }
+
   return Number(
-    priceText
+    String(price)
       .replace("R$", "")
       .replace(/\./g, "")
       .replace(",", ".")
