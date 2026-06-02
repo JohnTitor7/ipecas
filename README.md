@@ -1,8 +1,8 @@
 # i Peças
 
-Site desenvolvido para consulta de peças de reposição para celulares, com foco em visualização de produtos, preços, disponibilidade e contato rápido via WhatsApp.
+Site desenvolvido para consulta de peças de reposição para celulares, com foco em visualização de produtos, preços, disponibilidade, categorias e contato rápido via WhatsApp.
 
-O projeto foi criado para uma loja de peças de celular, funcionando como uma vitrine digital. A proposta é permitir que clientes consultem produtos disponíveis sem carrinho de compras e sem checkout, entrando em contato diretamente com a loja para confirmar informações.
+O projeto foi criado para uma loja de peças de celular, funcionando como uma vitrine digital. A proposta é permitir que clientes consultem produtos disponíveis sem carrinho de compras e sem checkout, entrando em contato diretamente com a loja para confirmar preço, compatibilidade e disponibilidade.
 
 ## Deploy
 
@@ -18,9 +18,11 @@ https://github.com/JohnTitor7/ipecas
 
 ## Objetivo do projeto
 
-O objetivo do i Peças é oferecer uma vitrine digital para consulta de peças e acessórios de celular.
+O objetivo do i Peças é oferecer uma vitrine digital moderna para consulta de peças e acessórios de celular.
 
-A aplicação permite visualizar produtos, consultar preços, verificar disponibilidade e iniciar contato pelo WhatsApp. O foco não é venda direta pelo site, mas sim consulta rápida, organização de catálogo e atendimento personalizado.
+A aplicação permite visualizar produtos, consultar preços, verificar disponibilidade, filtrar por categoria, marca, estoque e faixa de preço, além de iniciar contato diretamente pelo WhatsApp.
+
+O foco não é venda direta pelo site, mas sim consulta rápida, organização de catálogo e atendimento personalizado.
 
 ## Funcionalidades
 
@@ -31,7 +33,14 @@ A aplicação permite visualizar produtos, consultar preços, verificar disponib
 * Filtros por marca, estoque e faixa de preço
 * Cards de produtos com imagem, nome, modelo, preço e status de estoque
 * Botão de consulta via WhatsApp
-* Layout responsivo para desktop e celular
+* Hero com carrossel de banners
+* Transição suave entre banners
+* Setas de navegação no banner
+* Indicadores de banner ativo
+* Seção de destaques com carrossel horizontal de produtos
+* Rodapé profissional com informações da loja
+* Detalhes visuais de circuito em vermelho no fundo do site
+* Layout responsivo para desktop, tablet e celular
 * Menu lateral de categorias no mobile
 * Página administrativa protegida em `/admin`
 * Login administrativo com Firebase Authentication
@@ -43,7 +52,9 @@ A aplicação permite visualizar produtos, consultar preços, verificar disponib
 * Feedback de sucesso e erro no painel administrativo
 * Loading em ações administrativas
 * Produtos salvos online no Cloud Firestore
+* Atualização em tempo real dos produtos
 * Regras de segurança no Firestore permitindo escrita apenas para administrador autorizado
+* Correção de rotas da Vercel com `vercel.json`
 * Deploy na Vercel
 
 ## Tecnologias utilizadas
@@ -65,6 +76,10 @@ A aplicação permite visualizar produtos, consultar preços, verificar disponib
 ```txt
 src/
 ├── assets/
+│   ├── banners/
+│   │   ├── banner-baterias.png
+│   │   ├── banner-conectores.png
+│   │   └── banner-telas.png
 │   ├── products/
 │   ├── hero-banner.png
 │   ├── hero.png
@@ -77,6 +92,7 @@ src/
 │   ├── CatalogSidebar.jsx
 │   ├── CategoryPage.css
 │   ├── CategoryPage.jsx
+│   ├── Footer.jsx
 │   ├── Header.css
 │   ├── Header.jsx
 │   ├── Hero.css
@@ -89,10 +105,23 @@ src/
 ├── services/
 │   ├── firebase.js
 │   └── productService.js
+├── styles/
+│   └── circuit-details.css
 ├── App.css
 ├── App.jsx
 ├── index.css
 └── main.jsx
+```
+
+Arquivos principais na raiz:
+
+```txt
+index.html
+package.json
+package-lock.json
+vite.config.js
+vercel.json
+README.md
 ```
 
 ## Principais componentes
@@ -110,14 +139,17 @@ Componente responsável pelo topo do site público, contendo:
 
 Componente responsável pela área principal da home, contendo:
 
-* Banner visual
+* Carrossel de banners
+* Transição suave entre banners
+* Setas de navegação
+* Indicadores de slide ativo
 * Menu de categorias lateral no desktop
 * Menu lateral no mobile
 * Blocos informativos sobre qualidade, preços e atendimento
 
 ### Catalog
 
-Componente responsável pela seção de destaques, exibindo os produtos em formato de cards.
+Componente responsável pela seção de destaques, exibindo produtos em formato de carrossel horizontal.
 
 ### CategoryPage
 
@@ -138,6 +170,17 @@ Componente responsável pela exibição individual de cada produto, contendo:
 * Estoque
 * Botão de consulta via WhatsApp
 
+### Footer
+
+Componente responsável pelo rodapé do site, contendo:
+
+* Chamada para atendimento via WhatsApp
+* Informações da loja
+* Categorias
+* Horário de atendimento
+* Link para área administrativa
+* Créditos do projeto
+
 ### Login
 
 Componente responsável pela autenticação do painel administrativo usando Firebase Authentication.
@@ -156,6 +199,7 @@ Componente responsável pelo painel administrativo, permitindo:
 * Restaurar produtos iniciais
 * Controlar quantidade em estoque
 * Exibir mensagens de sucesso e erro
+* Evitar múltiplos cliques durante ações com loading
 
 ### AdminProductList
 
@@ -210,6 +254,28 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
   }
+}
+```
+
+## Rotas
+
+```txt
+/       → site público
+/admin  → painel administrativo protegido por login
+```
+
+O projeto utiliza `React Router DOM`. Para evitar erro 404 ao acessar `/admin` diretamente na Vercel, foi criado o arquivo `vercel.json` com regra de rewrite para aplicações SPA.
+
+Exemplo:
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
 }
 ```
 
@@ -288,6 +354,19 @@ No momento, alguns produtos possuem imagem cadastrada e outros ainda estão sem 
 
 Os produtos sem imagem são exibidos normalmente, permitindo que as imagens sejam adicionadas futuramente conforme forem encontradas ou produzidas.
 
+O upload direto de imagens ainda não foi implementado, pois uma solução com Firebase Storage pode exigir ativação de plano com cobrança. Uma alternativa futura é utilizar Cloudinary ou outro serviço de hospedagem de imagens.
+
+## Identidade visual
+
+O projeto utiliza uma identidade visual baseada em:
+
+* Fundo escuro
+* Destaques em vermelho
+* Elementos com aparência tecnológica
+* Banners promocionais
+* Detalhes sutis de circuito no fundo
+* Layout inspirado em vitrines digitais profissionais
+
 ## Status do projeto
 
 Projeto em desenvolvimento, com front-end e back-end Firebase funcionais.
@@ -298,6 +377,10 @@ A aplicação já possui:
 * Catálogo de produtos
 * Listagem por categoria
 * Filtros
+* Carrossel de banners
+* Carrossel de produtos em destaque
+* Rodapé profissional
+* Detalhes visuais de circuito
 * Painel administrativo protegido
 * Login com Firebase
 * Produtos salvos no Firestore
@@ -307,14 +390,16 @@ A aplicação já possui:
 
 ## Próximos passos
 
-* Adicionar upload real de imagens com Firebase Storage
+* Adicionar upload real de imagens com Cloudinary ou Firebase Storage
 * Melhorar padronização visual das imagens dos produtos
 * Criar domínio personalizado
 * Refinar responsividade em mais tamanhos de tela
 * Melhorar filtros e ordenação dos produtos
 * Adicionar busca avançada no painel administrativo
+* Criar dashboard simples no painel administrativo
 * Criar histórico de alterações no painel
-* Adicionar confirmação visual mais avançada para ações administrativas
+* Adicionar página 404 personalizada
+* Remover ou proteger melhor o botão de restaurar produtos iniciais em produção
 
 ## Autor
 
