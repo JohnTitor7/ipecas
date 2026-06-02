@@ -11,7 +11,7 @@ import {
 function Footer() {
   return (
     <footer style={footerStyle}>
-      <section style={ctaSectionStyle}>
+      <section className="circuit-footer" style={ctaSectionStyle}>
         <div>
           <p style={ctaLabelStyle}>Atendimento especializado</p>
 
@@ -57,12 +57,15 @@ function Footer() {
           <a href="#catalogo" style={footerLinkStyle}>
             Telas
           </a>
+
           <a href="#catalogo" style={footerLinkStyle}>
             Baterias
           </a>
+
           <a href="#catalogo" style={footerLinkStyle}>
             Conectores
           </a>
+
           <a href="#catalogo" style={footerLinkStyle}>
             Acessórios
           </a>

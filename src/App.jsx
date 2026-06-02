@@ -25,6 +25,8 @@ import {
   updateProduct,
 } from "./services/productService";
 
+import "./styles/circuit-details.css";
+
 const ADMIN_EMAILS = ["ryanv5944@gmail.com"];
 
 function App() {
@@ -148,14 +150,7 @@ function App() {
   const isHomePage = selectedCategory === "Todos";
 
   return (
-    <div
-      style={{
-        backgroundColor: "#0a0a0a",
-        minHeight: "100vh",
-        color: "white",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
+    <div className="app-shell">
       <Routes>
         <Route
           path="/"

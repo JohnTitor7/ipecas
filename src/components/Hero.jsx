@@ -153,7 +153,7 @@ function Hero({ onSelectCategory }) {
   }
 
   return (
-    <section className="hero">
+    <section className="hero circuit-surface">
       <div className="hero-content">
         <button
           type="button"

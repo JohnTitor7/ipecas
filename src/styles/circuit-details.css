@@ -1,0 +1,197 @@
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* Circuitos vermelhos sutis no fundo geral do site */
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.09;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 430px 430px, 430px 430px;
+  background-position: top right, bottom left;
+  background-image:
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 430 430'>\
+  <g fill='none' stroke='%23ff1f3d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'>\
+    <path d='M430 36 H330 V96 H280 V142 H220 V198 H160'/>\
+    <path d='M430 86 H355 V135 H305 V185 H250'/>\
+    <path d='M430 136 H372 V188 H318 V240 H260'/>\
+    <path d='M388 0 V72 H338 V124 H286 V180'/>\
+    <path d='M338 0 V92 H300 V146 H240'/>\
+    <path d='M430 238 H360 V288 H300 V342 H230'/>\
+    <path d='M420 300 H350 V350 H280'/>\
+    <circle cx='330' cy='96' r='7'/>\
+    <circle cx='280' cy='142' r='6'/>\
+    <circle cx='220' cy='198' r='6'/>\
+    <circle cx='355' cy='135' r='5'/>\
+    <circle cx='305' cy='185' r='5'/>\
+    <circle cx='318' cy='240' r='5'/>\
+    <circle cx='338' cy='72' r='5'/>\
+    <circle cx='300' cy='146' r='5'/>\
+    <circle cx='360' cy='288' r='6'/>\
+    <circle cx='300' cy='342' r='6'/>\
+  </g>\
+</svg>"),
+    url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 430 430'>\
+  <g fill='none' stroke='%23ff1f3d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'>\
+    <path d='M0 394 H100 V332 H158 V280 H220 V224 H282'/>\
+    <path d='M0 344 H82 V294 H140 V244 H198'/>\
+    <path d='M0 292 H62 V238 H120 V184 H180'/>\
+    <path d='M34 430 V356 H88 V304 H142 V246'/>\
+    <path d='M88 430 V338 H130 V282 H192'/>\
+    <path d='M0 170 H70 V120 H130 V76 H196'/>\
+    <path d='M12 90 H88 V48 H150'/>\
+    <circle cx='100' cy='332' r='7'/>\
+    <circle cx='158' cy='280' r='6'/>\
+    <circle cx='220' cy='224' r='6'/>\
+    <circle cx='82' cy='294' r='5'/>\
+    <circle cx='140' cy='244' r='5'/>\
+    <circle cx='120' cy='184' r='5'/>\
+    <circle cx='88' cy='304' r='5'/>\
+    <circle cx='130' cy='282' r='5'/>\
+    <circle cx='70' cy='120' r='6'/>\
+    <circle cx='88' cy='48' r='5'/>\
+  </g>\
+</svg>");
+}
+
+.app-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Circuitos em blocos específicos */
+
+.circuit-surface,
+.circuit-footer {
+  position: relative;
+  overflow: hidden;
+}
+
+.circuit-surface::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 260px;
+  height: 260px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.12;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top right;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 260'>\
+  <g fill='none' stroke='%23ff1f3d' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'>\
+    <path d='M260 28 H184 V76 H130 V122 H82'/>\
+    <path d='M260 72 H204 V116 H150 V160'/>\
+    <path d='M238 0 V52 H194 V98 H144 V142'/>\
+    <path d='M260 154 H210 V198 H152 V236'/>\
+    <circle cx='184' cy='76' r='6'/>\
+    <circle cx='130' cy='122' r='6'/>\
+    <circle cx='204' cy='116' r='5'/>\
+    <circle cx='194' cy='98' r='5'/>\
+    <circle cx='210' cy='198' r='5'/>\
+  </g>\
+</svg>");
+}
+
+.circuit-surface::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 235px;
+  height: 235px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.1;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom left;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 235 235'>\
+  <g fill='none' stroke='%23ff1f3d' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'>\
+    <path d='M0 210 H72 V160 H122 V116 H170'/>\
+    <path d='M0 166 H52 V126 H96 V86 H142'/>\
+    <path d='M24 235 V188 H70 V144 H112'/>\
+    <path d='M0 76 H64 V38 H118'/>\
+    <circle cx='72' cy='160' r='6'/>\
+    <circle cx='122' cy='116' r='6'/>\
+    <circle cx='52' cy='126' r='5'/>\
+    <circle cx='70' cy='144' r='5'/>\
+    <circle cx='64' cy='38' r='5'/>\
+  </g>\
+</svg>");
+}
+
+.circuit-surface > *,
+.circuit-footer > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Detalhe claro e sutil dentro da faixa vermelha do footer */
+
+.circuit-footer::before {
+  content: "";
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  width: 280px;
+  height: 190px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.13;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom right;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 190'>\
+  <g fill='none' stroke='%23ffffff' stroke-width='2.1' stroke-linecap='round' stroke-linejoin='round'>\
+    <path d='M280 40 H210 V84 H154 V124 H112'/>\
+    <path d='M280 92 H226 V126 H178 V158'/>\
+    <path d='M236 0 V54 H190 V96 H146'/>\
+    <path d='M280 148 H238 V178 H190'/>\
+    <circle cx='210' cy='84' r='6'/>\
+    <circle cx='154' cy='124' r='6'/>\
+    <circle cx='226' cy='126' r='5'/>\
+    <circle cx='190' cy='96' r='5'/>\
+  </g>\
+</svg>");
+}
+
+@media (max-width: 768px) {
+  .app-shell::before {
+    opacity: 0.055;
+    background-size: 260px 260px, 260px 260px;
+  }
+
+  .circuit-surface::before {
+    width: 150px;
+    height: 150px;
+    opacity: 0.08;
+  }
+
+  .circuit-surface::after {
+    width: 140px;
+    height: 140px;
+    opacity: 0.07;
+  }
+
+  .circuit-footer::before {
+    width: 170px;
+    height: 120px;
+    opacity: 0.08;
+  }
+}
